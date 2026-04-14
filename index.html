@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
-<meta name="theme-color" content="#075e54">
+<meta name="theme-color" content="#b84c09">
 <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
 <meta http-equiv="Pragma" content="no-cache">
 <meta http-equiv="Expires" content="0">
@@ -17,21 +17,21 @@
 <style>
 /* ======= WHATSAPP COLOR PALETTE ======= */
 :root {
-  --wa-dark:    #075e54;
-  --wa-mid:     #128c7e;
-  --wa-light:   #25d366;
-  --wa-teal:    #34b7f1;
-  --wa-bg:      #e5ddd5;
+  --wa-dark:    #b84c09;
+  --wa-mid:     #d4621a;
+  --wa-light:   #f59332;
+  --wa-teal:    #fbb04e;
+  --wa-bg:      #f5ece0;
   --wa-panel:   #f0f2f5;
   --wa-white:   #ffffff;
   --wa-border:  #d1d7db;
   --wa-text:    #111b21;
   --wa-muted:   #667781;
   --wa-icon:    #54656f;
-  --wa-bubble:  #dcf8c6;
+  --wa-bubble:  #fff0db;
   --wa-red:     #f15c6d;
   --wa-orange:  #ff9500;
-  --wa-blue:    #34b7f1;
+  --wa-blue:    #fbb04e;
   --wa-shadow:  0 1px 3px rgba(0,0,0,.13);
   --wa-shadow2: 0 2px 8px rgba(0,0,0,.15);
 }
@@ -76,7 +76,7 @@ html,body{height:100%;font-family:'Inter',sans-serif;background:var(--wa-bg);col
 .nav-group-lbl{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.6px;color:var(--wa-muted);padding:10px 18px 4px;}
 .nav-item{display:flex;align-items:center;gap:11px;padding:11px 18px;cursor:pointer;color:var(--wa-icon);font-size:13px;font-weight:500;transition:all .15s;border-left:3px solid transparent;position:relative;}
 .nav-item:hover{background:#f5f5f5;color:var(--wa-mid);}
-.nav-item.active{background:#e7f5f4;color:var(--wa-dark);border-left-color:var(--wa-dark);font-weight:600;}
+.nav-item.active{background:#fff3e6;color:var(--wa-dark);border-left-color:var(--wa-dark);font-weight:600;}
 .nav-icon{font-size:16px;width:22px;text-align:center;}
 .nav-badge{margin-left:auto;background:var(--wa-light);color:#fff;font-size:10px;font-weight:700;border-radius:10px;padding:2px 7px;min-width:20px;text-align:center;}
 .sb-logout{padding:12px 18px;border-top:1px solid var(--wa-border);}
@@ -134,7 +134,7 @@ tr:hover td{background:#fafafa;}
 /* FILTER PILLS */
 .filters{display:flex;gap:7px;flex-wrap:wrap;margin-bottom:14px;}
 .fp{background:var(--wa-white);border:1.5px solid var(--wa-border);border-radius:20px;padding:5px 13px;font-size:12px;font-weight:600;cursor:pointer;color:var(--wa-muted);font-family:inherit;transition:all .15s;}
-.fp.active{border-color:var(--wa-mid);color:var(--wa-dark);background:#e7f5f4;}
+.fp.active{border-color:var(--wa-mid);color:var(--wa-dark);background:#fff3e6;}
 
 /* FORM */
 .fg{margin-bottom:14px;}
@@ -149,7 +149,7 @@ tr:hover td{background:#fafafa;}
 .btn{display:inline-flex;align-items:center;gap:7px;padding:9px 16px;border-radius:9px;font-weight:600;font-family:inherit;font-size:13px;cursor:pointer;border:none;transition:all .2s;}
 .btn-w{width:100%;justify-content:center;}
 .btn-primary{background:var(--wa-dark);color:#fff;}.btn-primary:hover{background:var(--wa-mid);}
-.btn-success{background:#dcf8c6;color:#065f46;border:1px solid #a7f3d0;}.btn-success:hover{background:#c3f0a8;}
+.btn-success{background:#fff0db;color:#065f46;border:1px solid #a7f3d0;}.btn-success:hover{background:#c3f0a8;}
 .btn-danger{background:#fef2f2;color:#dc2626;border:1px solid #fca5a5;}.btn-danger:hover{background:#fee2e2;}
 .btn-warn{background:#fff8e6;color:#92400e;border:1px solid #fde68a;}
 .btn-sec{background:var(--wa-panel);color:var(--wa-icon);border:1.5px solid var(--wa-border);}.btn-sec:hover{border-color:var(--wa-mid);color:var(--wa-dark);}
@@ -205,7 +205,7 @@ tr:hover td{background:#fafafa;}
 .trail-step{display:flex;align-items:center;gap:6px;font-size:11px;font-weight:600;}
 .trail-dot{width:28px;height:28px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:13px;flex-shrink:0;}
 .trail-line{height:2px;width:24px;background:var(--wa-border);flex-shrink:0;}
-.trail-done .trail-dot{background:#dcf8c6;color:#065f46;}
+.trail-done .trail-dot{background:#fff0db;color:#065f46;}
 .trail-done .trail-line{background:var(--wa-light);}
 .trail-active .trail-dot{background:var(--wa-dark);color:#fff;}
 .trail-future .trail-dot{background:#f0f0f0;color:#aaa;}
@@ -302,9 +302,24 @@ tr:hover td{background:#fafafa;}
 <div id="scr-login" class="screen active">
   <div class="login-box">
     <div class="login-logo">
-      <div class="app-icon">🏭</div>
+      <div class="app-icon" style="background:none;padding:0;overflow:hidden;"><svg width="72" height="72" viewBox="0 0 72 72" xmlns="http://www.w3.org/2000/svg">
+  <rect width="72" height="72" rx="18" fill="#b84c09"/>
+  <rect x="8" y="30" width="44" height="18" rx="4" fill="#f59332"/>
+  <rect x="8" y="30" width="44" height="8" rx="4" fill="#d4621a"/>
+  <rect x="10" y="24" width="18" height="11" rx="3" fill="#f59332"/>
+  <rect x="34" y="24" width="14" height="11" rx="3" fill="#f59332"/>
+  <rect x="36" y="19" width="11" height="8" rx="2" fill="#fbb04e"/>
+  <rect x="5" y="44" width="52" height="3" rx="0" fill="#d4621a"/>
+  <rect x="52" y="34" width="4" height="10" rx="1" fill="rgba(255,255,255,0.5)"/>
+  <rect x="6" y="34" width="4" height="10" rx="1" fill="rgba(255,255,255,0.5)"/>
+  <circle cx="18" cy="50" r="6" fill="#b84c09" stroke="white" stroke-width="2"/>
+  <circle cx="18" cy="50" r="2.5" fill="white"/>
+  <circle cx="48" cy="50" r="6" fill="#b84c09" stroke="white" stroke-width="2"/>
+  <circle cx="48" cy="50" r="2.5" fill="white"/>
+  <text x="36" y="14" text-anchor="middle" font-family="Arial,sans-serif" font-size="7" font-weight="700" fill="rgba(255,255,255,0.9)" letter-spacing="1.5">VPS</text>
+</svg></div>
       <h1>SURYAANS PAPER</h1>
-      <p>Vehicle Planning System</p>
+      <p style="color:var(--wa-dark);font-weight:600;font-size:13px;margin-top:4px;">🚛 Vehicle Planning System</p>
     </div>
     <div class="lf"><label>Username</label><input type="text" id="li-user" placeholder="Enter your username" autocomplete="username" onkeydown="if(event.key==='Enter')doLogin()"></div>
     <div class="lf"><label>Password</label><input type="password" id="li-pass" placeholder="Enter password" autocomplete="current-password" onkeydown="if(event.key==='Enter')doLogin()"></div>
@@ -329,7 +344,18 @@ tr:hover td{background:#fafafa;}
   <div class="sidebar" id="sidebar">
     <div class="sb-header">
       <div class="sb-brand">
-        <div class="sb-icon">🏭</div>
+        <div class="sb-icon"><svg width="22" height="22" viewBox="0 0 72 72" xmlns="http://www.w3.org/2000/svg">
+  <rect x="8" y="30" width="44" height="18" rx="4" fill="#f59332"/>
+  <rect x="8" y="30" width="44" height="8" rx="4" fill="rgba(255,255,255,0.3)"/>
+  <rect x="10" y="24" width="18" height="11" rx="3" fill="#f59332"/>
+  <rect x="34" y="24" width="14" height="11" rx="3" fill="#f59332"/>
+  <rect x="36" y="19" width="11" height="8" rx="2" fill="#fbb04e"/>
+  <rect x="5" y="44" width="52" height="3" fill="rgba(255,255,255,0.4)"/>
+  <circle cx="18" cy="50" r="6" fill="#b84c09" stroke="white" stroke-width="2"/>
+  <circle cx="18" cy="50" r="2.5" fill="white"/>
+  <circle cx="48" cy="50" r="6" fill="#b84c09" stroke="white" stroke-width="2"/>
+  <circle cx="48" cy="50" r="2.5" fill="white"/>
+</svg></div>
         <div>
           <div class="sb-title">SURYAANS PAPER</div>
           <div class="sb-subtitle">Vehicle Planning System</div>
@@ -636,7 +662,7 @@ function showLoading(msg='Loading…'){
   if(!el){
     el=document.createElement('div');
     el.id='fb-loading';
-    el.style.cssText='position:fixed;inset:0;background:rgba(7,94,84,.82);display:flex;flex-direction:column;align-items:center;justify-content:center;z-index:9999;color:#fff;font-family:inherit;gap:14px;';
+    el.style.cssText='position:fixed;inset:0;background:rgba(184,76,9,.88);display:flex;flex-direction:column;align-items:center;justify-content:center;z-index:9999;color:#fff;font-family:inherit;gap:14px;';
     el.innerHTML='<div style="font-size:34px">🏭</div><div id="fb-loading-msg" style="font-size:15px;font-weight:600;text-align:center;padding:0 20px"></div><div style="width:44px;height:44px;border:4px solid rgba(255,255,255,.3);border-top-color:#fff;border-radius:50%;animation:spin .8s linear infinite"></div>';
     const style=document.createElement('style');
     style.textContent='@keyframes spin{to{transform:rotate(360deg)}}';
@@ -722,13 +748,13 @@ async function loadDB(){
 }
 
 function showDbError(e){
-  document.body.innerHTML=`<div style="min-height:100vh;background:#075e54;display:flex;align-items:center;justify-content:center;padding:20px;font-family:Inter,sans-serif">
+  document.body.innerHTML=`<div style="min-height:100vh;background:#b84c09;display:flex;align-items:center;justify-content:center;padding:20px;font-family:Inter,sans-serif">
     <div style="background:#fff;border-radius:16px;padding:36px;max-width:420px;width:100%;text-align:center">
       <div style="font-size:40px;margin-bottom:12px">⚠️</div>
       <h2 style="color:#dc2626;margin-bottom:8px">Database Connection Failed</h2>
       <p style="color:#667781;font-size:13px;margin-bottom:18px">Could not connect to Firebase. Check your internet connection and try again.</p>
       <p style="color:#aaa;font-size:11px;background:#f5f5f5;padding:8px;border-radius:6px;word-break:break-all">${e.message}</p>
-      <button onclick="location.reload()" style="margin-top:18px;background:#075e54;color:#fff;border:none;border-radius:9px;padding:11px 28px;font-size:14px;font-weight:600;cursor:pointer">Retry</button>
+      <button onclick="location.reload()" style="margin-top:18px;background:#b84c09;color:#fff;border:none;border-radius:9px;padding:11px 28px;font-size:14px;font-weight:600;cursor:pointer">Retry</button>
     </div>
   </div>`;
 }
@@ -780,8 +806,8 @@ function doLogout(){
 function showApp(){
   document.getElementById('scr-login').classList.remove('active');
   document.getElementById('scr-app').classList.add('active');
-  const colors={admin:'#075e54',sales:'#1d4ed8',billing:'#6b21a8',logistics:'#065f46'};
-  const bgs={admin:'#ecfdf5',sales:'#eff6ff',billing:'#f3e8ff',logistics:'#dcf8c6'};
+  const colors={admin:'#b84c09',sales:'#1d4ed8',billing:'#6b21a8',logistics:'#065f46'};
+  const bgs={admin:'#ecfdf5',sales:'#eff6ff',billing:'#f3e8ff',logistics:'#fff0db'};
   const av=document.getElementById('sb-av');
   av.textContent=ME.name.charAt(0).toUpperCase();
   av.style.background=bgs[ME.role]||'#eee';
@@ -1053,7 +1079,7 @@ function buildBVGCard(grp,gi,allParties){
   });
   h+=`</div>
     <button onclick="addVRow(${gi})" class="btn btn-sec btn-xs" style="margin-bottom:10px">+ Add Another Vehicle Type</button>
-    <div style="background:#e7f5f4;border-radius:7px;padding:8px 12px;font-size:12px;color:var(--wa-dark);margin-bottom:10px">
+    <div style="background:#fff3e6;border-radius:7px;padding:8px 12px;font-size:12px;color:var(--wa-dark);margin-bottom:10px">
       📊 Material: <strong>${grpQty} MT</strong> &nbsp;|&nbsp;
       Total Capacity: <strong>${totalCap>0?totalCap+' MT':'—'}</strong> &nbsp;|&nbsp;
       Total Vehicles: <strong>${totalVehicles}</strong>
@@ -1201,7 +1227,7 @@ function renderLogisticsMod(){
   const confirmedCount=arrVehicles.filter(v=>v.confirmed||v.vehicleNo).length;
   const total=arrVehicles.length;
   let h=`<div class="alert alert-warn" style="margin-bottom:10px">🚛 Plan <strong>${p.id}</strong> &nbsp;|&nbsp; <strong>${p.totalQty} MT</strong> &nbsp;|&nbsp; Cities: <strong>${cities.join(', ')}</strong></div>
-  <div style="background:#e7f5f4;border-radius:9px;padding:10px 14px;margin-bottom:12px;font-size:13px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:8px">
+  <div style="background:#fff3e6;border-radius:9px;padding:10px 14px;margin-bottom:12px;font-size:13px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:8px">
     <span>📊 <strong>${confirmedCount} of ${total}</strong> vehicle slots confirmed</span>
     ${confirmedCount>0?`<span class="badge b-done">✅ ${confirmedCount} saved</span>`:`<span class="badge b-pending">⏳ None saved yet</span>`}
   </div>`;
@@ -1491,7 +1517,7 @@ function renderDash(){
   document.getElementById('dash-sub').textContent=`Welcome, ${ME.name} — ${fd(new Date().toISOString().split('T')[0])}`;
   let stats='',body='',action='';
   if(ME.role==='admin'||ME.role==='sales'){
-    stats=sc('Total Plans',tot,'#075e54','All time')+sc('Pending Verify',pb,'#d97706','Awaiting billing')+sc('In Progress',bd+ar,'#6b21a8','Pipeline')+sc('Loading Done',dn,'#065f46','Completed');
+    stats=sc('Total Plans',tot,'#b84c09','All time')+sc('Pending Verify',pb,'#d97706','Awaiting billing')+sc('In Progress',bd+ar,'#6b21a8','Pipeline')+sc('Loading Done',dn,'#065f46','Completed');
     if(canDo('add'))action=`<button class="btn btn-primary" onclick="goPage('create-plan')">+ New Plan</button>`;
     const rec=[...DB.plans].filter(p=>ME.role==='admin'||p.createdById===ME.id).reverse().slice(0,8);
     body=rec.length?`<div class="wcard"><div class="wcard-head"><div class="wcard-title">Recent Plans</div><button class="btn btn-sec btn-xs" onclick="goPage('my-plans')">View All</button></div><div class="tbl-wrap"><table><thead><tr><th>Plan No.</th><th>Date</th><th>Parties</th><th>Qty</th><th>Status</th><th></th></tr></thead><tbody>${rec.map(p=>`<tr><td class="fw6 c-green">${p.id}</td><td>${fd(p.date)}</td><td>${p.parties.length}</td><td>${p.totalQty} MT</td><td>${sbadge(p.status)}</td><td><button class="btn btn-sec btn-xs" onclick="viewPlan('${p.id}')">View</button></td></tr>`).join('')}</tbody></table></div></div>`:`<div class="wcard"><div class="empty"><div class="empty-icon">📝</div><p>No plans yet. Create your first loading plan.</p></div></div>`;
@@ -1501,7 +1527,7 @@ function renderDash(){
     const pend=DB.plans.filter(p=>p.status==='pending_billing');
     body=pend.length?`<div class="wcard"><div class="wcard-head"><div class="wcard-title">⏳ Awaiting Verification (${pend.length})</div></div><div class="tbl-wrap"><table><thead><tr><th>Plan No.</th><th>Date</th><th>Parties</th><th>Qty</th><th>Action</th></tr></thead><tbody>${pend.map(p=>`<tr><td class="fw6 c-green">${p.id}</td><td>${fd(p.date)}</td><td>${p.parties.length}</td><td>${p.totalQty} MT</td><td><button class="btn btn-warn btn-xs" onclick="openBilling('${p.id}')">Verify & Assign</button></td></tr>`).join('')}</tbody></table></div></div>`:`<div class="wcard"><div class="empty"><div class="empty-icon">✅</div><p>All plans verified!</p></div></div>`;
   }else{
-    stats=sc('Need Vehicles',bd,'#d97706','To arrange')+sc('Active',ar,'#6b21a8','Loading in progress')+sc('Done',dn,'#065f46','Completed')+sc('Total Plans',tot,'#075e54','All');
+    stats=sc('Need Vehicles',bd,'#d97706','To arrange')+sc('Active',ar,'#6b21a8','Loading in progress')+sc('Done',dn,'#065f46','Completed')+sc('Total Plans',tot,'#b84c09','All');
     if(bd)action=`<button class="btn btn-primary" onclick="goPage('logistics-inbox')">Arrange Vehicles</button>`;
     const qi=DB.plans.filter(p=>p.status==='billing_done');
     const ai=DB.plans.filter(p=>p.status==='vehicles_arranged');
@@ -1713,8 +1739,8 @@ let editingUserId=null;
 function renderAdminUsers(){
   const ul=document.getElementById('users-list');
   if(!DB.users.length){ul.innerHTML='<div class="empty"><p>No users yet.</p></div>';return;}
-  const colMap={admin:'#075e54',sales:'#1d4ed8',billing:'#6b21a8',logistics:'#065f46'};
-  const bgMap={admin:'#ecfdf5',sales:'#eff6ff',billing:'#f3e8ff',logistics:'#dcf8c6'};
+  const colMap={admin:'#b84c09',sales:'#1d4ed8',billing:'#6b21a8',logistics:'#065f46'};
+  const bgMap={admin:'#ecfdf5',sales:'#eff6ff',billing:'#f3e8ff',logistics:'#fff0db'};
   ul.innerHTML=DB.users.map(u=>`<div class="ucard">
     <div class="ucard-left">
       <div class="ucard-av" style="background:${bgMap[u.role]||'#eee'};color:${colMap[u.role]||'#333'}">${u.name.charAt(0).toUpperCase()}</div>
@@ -1867,7 +1893,7 @@ function fd(d){
 
 function toast(msg,type='ok'){
   const t=document.createElement('div');
-  const styles={ok:'background:#dcf8c6;color:#064e3b;border:1px solid #a7f3d0',warn:'background:#fffbeb;color:#92400e;border:1px solid #fde68a',err:'background:#fef2f2;color:#dc2626;border:1px solid #fca5a5'};
+  const styles={ok:'background:#fff0db;color:#064e3b;border:1px solid #a7f3d0',warn:'background:#fffbeb;color:#92400e;border:1px solid #fde68a',err:'background:#fef2f2;color:#dc2626;border:1px solid #fca5a5'};
   t.style.cssText=`position:fixed;bottom:22px;right:22px;padding:11px 18px;border-radius:11px;font-weight:600;font-size:13px;z-index:9999;box-shadow:0 4px 20px rgba(0,0,0,.15);transform:translateY(70px);transition:transform .3s;max-width:320px;font-family:inherit;${styles[type]||styles.ok}`;
   t.textContent=msg;document.body.appendChild(t);
   setTimeout(()=>t.style.transform='translateY(0)',10);

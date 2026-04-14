@@ -1,0 +1,1936 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<meta name="theme-color" content="#075e54">
+<meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+<meta http-equiv="Pragma" content="no-cache">
+<meta http-equiv="Expires" content="0">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="VPS">
+<meta name="mobile-web-app-capable" content="yes">
+<link rel="manifest" href="manifest.json">
+<title>SURYAANS PAPER – Vehicle Planning System</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+/* ======= WHATSAPP COLOR PALETTE ======= */
+:root {
+  --wa-dark:    #075e54;
+  --wa-mid:     #128c7e;
+  --wa-light:   #25d366;
+  --wa-teal:    #34b7f1;
+  --wa-bg:      #e5ddd5;
+  --wa-panel:   #f0f2f5;
+  --wa-white:   #ffffff;
+  --wa-border:  #d1d7db;
+  --wa-text:    #111b21;
+  --wa-muted:   #667781;
+  --wa-icon:    #54656f;
+  --wa-bubble:  #dcf8c6;
+  --wa-red:     #f15c6d;
+  --wa-orange:  #ff9500;
+  --wa-blue:    #34b7f1;
+  --wa-shadow:  0 1px 3px rgba(0,0,0,.13);
+  --wa-shadow2: 0 2px 8px rgba(0,0,0,.15);
+}
+*{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent;}
+html,body{height:100%;font-family:'Inter',sans-serif;background:var(--wa-bg);color:var(--wa-text);font-size:14px;}
+
+/* ===== SCREENS ===== */
+.screen{display:none;width:100%;min-height:100vh;}
+.screen.active{display:flex;}
+
+/* ===== LOGIN ===== */
+#scr-login{background:var(--wa-dark);flex-direction:column;align-items:center;justify-content:center;padding:20px;}
+.login-box{background:var(--wa-white);border-radius:16px;padding:40px 36px;width:100%;max-width:400px;box-shadow:0 8px 32px rgba(0,0,0,.25);}
+.login-logo{text-align:center;margin-bottom:28px;}
+.login-logo .app-icon{width:72px;height:72px;background:var(--wa-dark);border-radius:20px;display:inline-flex;align-items:center;justify-content:center;font-size:34px;margin-bottom:12px;box-shadow:var(--wa-shadow2);}
+.login-logo h1{font-size:22px;font-weight:700;color:var(--wa-dark);}
+.login-logo p{font-size:12px;color:var(--wa-muted);margin-top:2px;}
+.lf label{display:block;font-size:11px;font-weight:600;color:var(--wa-muted);text-transform:uppercase;letter-spacing:.4px;margin-bottom:5px;}
+.lf{margin-bottom:14px;}
+.lf input{width:100%;border:1.5px solid var(--wa-border);border-radius:10px;padding:11px 13px;font-size:16px;font-family:inherit;outline:none;transition:border-color .2s;background:#fafafa;}
+.lf input:focus{border-color:var(--wa-mid);}
+.err-msg{background:#fef2f2;border:1px solid #fca5a5;border-radius:8px;padding:9px 12px;font-size:12px;color:#dc2626;margin-bottom:12px;display:none;}
+.btn-login{width:100%;background:var(--wa-dark);color:#fff;border:none;border-radius:10px;padding:13px;font-size:15px;font-weight:600;cursor:pointer;font-family:inherit;transition:background .2s;}
+.btn-login:hover{background:var(--wa-mid);}
+.login-footer{text-align:center;margin-top:18px;font-size:11px;color:var(--wa-muted);}
+
+/* ===== MAIN APP SHELL ===== */
+#scr-app{flex-direction:row;height:100vh;overflow:hidden;}
+
+/* SIDEBAR */
+.sidebar{width:260px;background:var(--wa-white);border-right:1px solid var(--wa-border);display:flex;flex-direction:column;height:100vh;flex-shrink:0;transition:width .3s;}
+.sb-header{background:var(--wa-dark);padding:16px 18px;display:flex;align-items:center;justify-content:space-between;}
+.sb-brand{display:flex;align-items:center;gap:10px;}
+.sb-icon{width:36px;height:36px;background:rgba(255,255,255,.15);border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:18px;}
+.sb-title{color:#fff;font-size:15px;font-weight:700;}
+.sb-subtitle{color:rgba(255,255,255,.7);font-size:10px;margin-top:1px;}
+.sb-user{background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.2);border-radius:10px;padding:10px 14px;margin:12px;display:flex;align-items:center;gap:10px;}
+.sb-av{width:34px;height:34px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:700;flex-shrink:0;}
+.sb-uname{color:#fff;font-weight:600;font-size:13px;}
+.sb-urole{color:rgba(255,255,255,.6);font-size:10px;margin-top:1px;}
+.sb-nav{flex:1;overflow-y:auto;padding:8px 0;}
+.nav-group-lbl{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.6px;color:var(--wa-muted);padding:10px 18px 4px;}
+.nav-item{display:flex;align-items:center;gap:11px;padding:11px 18px;cursor:pointer;color:var(--wa-icon);font-size:13px;font-weight:500;transition:all .15s;border-left:3px solid transparent;position:relative;}
+.nav-item:hover{background:#f5f5f5;color:var(--wa-mid);}
+.nav-item.active{background:#e7f5f4;color:var(--wa-dark);border-left-color:var(--wa-dark);font-weight:600;}
+.nav-icon{font-size:16px;width:22px;text-align:center;}
+.nav-badge{margin-left:auto;background:var(--wa-light);color:#fff;font-size:10px;font-weight:700;border-radius:10px;padding:2px 7px;min-width:20px;text-align:center;}
+.sb-logout{padding:12px 18px;border-top:1px solid var(--wa-border);}
+.btn-logout{width:100%;background:#fef2f2;border:1px solid #fca5a5;color:#dc2626;border-radius:9px;padding:9px;font-size:13px;font-weight:600;cursor:pointer;font-family:inherit;display:flex;align-items:center;justify-content:center;gap:7px;}
+.btn-logout:hover{background:#fee2e2;}
+
+/* MAIN AREA */
+.main-area{flex:1;display:flex;flex-direction:column;height:100vh;overflow:hidden;}
+.topbar{background:var(--wa-dark);padding:13px 20px;display:flex;align-items:center;gap:12px;flex-shrink:0;}
+.hamburger{background:none;border:none;cursor:pointer;color:#fff;font-size:22px;display:none;padding:2px 6px;}
+.topbar-title{color:#fff;font-size:16px;font-weight:700;}
+.topbar-sub{color:rgba(255,255,255,.7);font-size:11px;margin-top:1px;}
+.topbar-right{margin-left:auto;display:flex;align-items:center;gap:10px;}
+.topbar-badge{background:var(--wa-bubble);color:var(--wa-dark);font-size:11px;font-weight:700;padding:3px 10px;border-radius:12px;}
+
+/* PAGE CONTENT */
+.page-content{flex:1;overflow-y:auto;background:var(--wa-panel);}
+.page{display:none;padding:20px;}
+.page.active{display:block;}
+
+/* PAGE HEADER */
+.ph{display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:18px;flex-wrap:wrap;gap:10px;}
+.ph-left h2{font-size:18px;font-weight:700;color:var(--wa-text);}
+.ph-left p{font-size:12px;color:var(--wa-muted);margin-top:2px;}
+
+/* STATS */
+.stats-row{display:grid;grid-template-columns:repeat(auto-fit,minmax(130px,1fr));gap:12px;margin-bottom:18px;}
+.stat-box{background:var(--wa-white);border-radius:12px;padding:14px 16px;box-shadow:var(--wa-shadow);}
+.stat-lbl{font-size:10px;font-weight:600;text-transform:uppercase;letter-spacing:.4px;color:var(--wa-muted);margin-bottom:6px;}
+.stat-val{font-size:26px;font-weight:700;}
+.stat-sub{font-size:11px;color:var(--wa-muted);margin-top:2px;}
+
+/* CARD */
+.wcard{background:var(--wa-white);border-radius:12px;box-shadow:var(--wa-shadow);margin-bottom:14px;overflow:hidden;}
+.wcard-head{padding:13px 16px;border-bottom:1px solid var(--wa-border);display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:9px;}
+.wcard-title{font-weight:700;font-size:14px;color:var(--wa-text);}
+.wcard-body{padding:16px;}
+
+/* TABLE */
+.tbl-wrap{overflow-x:auto;}
+table{width:100%;border-collapse:collapse;}
+th{text-align:left;padding:9px 14px;font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.4px;color:var(--wa-muted);background:var(--wa-panel);border-bottom:1px solid var(--wa-border);}
+td{padding:11px 14px;border-bottom:1px solid #f0f0f0;font-size:13px;vertical-align:middle;}
+tr:last-child td{border-bottom:none;}
+tr:hover td{background:#fafafa;}
+
+/* BADGE */
+.badge{display:inline-flex;align-items:center;gap:4px;padding:3px 9px;border-radius:20px;font-size:11px;font-weight:600;white-space:nowrap;}
+.bdot{width:6px;height:6px;border-radius:50%;background:currentColor;}
+.b-pending{background:#fff8e6;color:#b45309;border:1px solid #fde68a;}
+.b-verified{background:#e6f4ff;color:#1d4ed8;border:1px solid #bfdbfe;}
+.b-arranged{background:#f3e8ff;color:#7e22ce;border:1px solid #e9d5ff;}
+.b-done{background:#ecfdf5;color:#065f46;border:1px solid #a7f3d0;}
+
+/* FILTER PILLS */
+.filters{display:flex;gap:7px;flex-wrap:wrap;margin-bottom:14px;}
+.fp{background:var(--wa-white);border:1.5px solid var(--wa-border);border-radius:20px;padding:5px 13px;font-size:12px;font-weight:600;cursor:pointer;color:var(--wa-muted);font-family:inherit;transition:all .15s;}
+.fp.active{border-color:var(--wa-mid);color:var(--wa-dark);background:#e7f5f4;}
+
+/* FORM */
+.fg{margin-bottom:14px;}
+.fg label{display:block;font-size:11px;font-weight:600;color:var(--wa-muted);text-transform:uppercase;letter-spacing:.4px;margin-bottom:5px;}
+.inp{width:100%;border:1.5px solid var(--wa-border);border-radius:9px;padding:10px 12px;font-size:16px;font-family:inherit;outline:none;background:#fafafa;transition:border-color .2s;color:var(--wa-text);}
+.inp:focus{border-color:var(--wa-mid);background:#fff;}
+.inp option{background:#fff;}
+.inp-sm{padding:7px 10px;font-size:12px;}
+.inp[readonly]{background:#f5f5f5;color:var(--wa-muted);}
+
+/* BUTTONS */
+.btn{display:inline-flex;align-items:center;gap:7px;padding:9px 16px;border-radius:9px;font-weight:600;font-family:inherit;font-size:13px;cursor:pointer;border:none;transition:all .2s;}
+.btn-w{width:100%;justify-content:center;}
+.btn-primary{background:var(--wa-dark);color:#fff;}.btn-primary:hover{background:var(--wa-mid);}
+.btn-success{background:#dcf8c6;color:#065f46;border:1px solid #a7f3d0;}.btn-success:hover{background:#c3f0a8;}
+.btn-danger{background:#fef2f2;color:#dc2626;border:1px solid #fca5a5;}.btn-danger:hover{background:#fee2e2;}
+.btn-warn{background:#fff8e6;color:#92400e;border:1px solid #fde68a;}
+.btn-sec{background:var(--wa-panel);color:var(--wa-icon);border:1.5px solid var(--wa-border);}.btn-sec:hover{border-color:var(--wa-mid);color:var(--wa-dark);}
+.btn-sm{padding:6px 12px;font-size:12px;border-radius:8px;}
+.btn-xs{padding:4px 9px;font-size:11px;border-radius:6px;}
+
+/* MODAL */
+.ov{display:none;position:fixed;inset:0;background:rgba(0,0,0,.55);z-index:1000;align-items:flex-start;justify-content:center;padding:12px;backdrop-filter:blur(2px);overflow-y:auto;-webkit-overflow-scrolling:touch;}
+.ov.open{display:flex;}
+.mbox{background:#fff;border-radius:14px;width:100%;max-width:580px;max-height:none;box-shadow:0 20px 60px rgba(0,0,0,.3);margin:auto;flex-shrink:0;}
+.mbox-lg{max-width:720px;}
+.mh{padding:15px 20px;border-bottom:1px solid var(--wa-border);display:flex;align-items:center;justify-content:space-between;background:#fff;border-radius:14px 14px 0 0;}
+.mh-title{font-weight:700;font-size:14px;}
+.mclose{background:none;border:none;cursor:pointer;color:var(--wa-muted);font-size:28px;line-height:1;padding:0 4px;min-width:36px;min-height:36px;display:flex;align-items:center;justify-content:center;}.mclose:hover{color:var(--wa-text);}
+.mb{padding:20px;overflow-y:auto;max-height:65vh;-webkit-overflow-scrolling:touch;}
+.mf{padding:13px 20px;border-top:1px solid var(--wa-border);display:flex;gap:9px;justify-content:flex-end;flex-wrap:wrap;background:#fff;border-radius:0 0 14px 14px;}
+/* ALERTS */
+.alert{border-radius:9px;padding:10px 13px;font-size:12px;margin-bottom:12px;display:flex;align-items:flex-start;gap:8px;line-height:1.5;}
+.alert-info{background:#eff6ff;border:1px solid #bfdbfe;color:#1e40af;}
+.alert-warn{background:#fffbeb;border:1px solid #fde68a;color:#92400e;}
+.alert-success{background:#ecfdf5;border:1px solid #a7f3d0;color:#065f46;}
+.alert-err{background:#fef2f2;border:1px solid #fca5a5;color:#dc2626;}
+
+/* GRID */
+.g2{display:grid;grid-template-columns:1fr 1fr;gap:12px;}
+.g3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px;}
+.divider{height:1px;background:var(--wa-border);margin:13px 0;}
+.empty{text-align:center;padding:36px 16px;color:var(--wa-muted);}
+.empty-icon{font-size:38px;margin-bottom:9px;}
+
+/* PARTY ROW */
+.prow{display:grid;grid-template-columns:1fr 100px 120px 32px;gap:7px;align-items:end;margin-bottom:7px;}
+
+/* BILLING ROW */
+.brow-card{background:var(--wa-panel);border:1.5px solid var(--wa-border);border-radius:10px;padding:13px;margin-bottom:10px;}
+
+/* PERMISSION MATRIX */
+.perm-table{width:100%;border-collapse:collapse;}
+.perm-table th,.perm-table td{padding:9px 12px;text-align:center;border:1px solid var(--wa-border);font-size:12px;}
+.perm-table th{background:var(--wa-panel);font-size:10px;font-weight:700;text-transform:uppercase;}
+.perm-table td:first-child{text-align:left;font-weight:600;}
+
+/* TOGGLE / CHECKBOX */
+.tog{position:relative;display:inline-block;width:38px;height:21px;}
+.tog input{opacity:0;width:0;height:0;}
+.tog-sl{position:absolute;inset:0;background:#ccc;border-radius:21px;cursor:pointer;transition:.3s;}
+.tog-sl:before{content:'';position:absolute;width:15px;height:15px;left:3px;bottom:3px;background:#fff;border-radius:50%;transition:.3s;}
+.tog input:checked+.tog-sl{background:var(--wa-light);}
+.tog input:checked+.tog-sl:before{transform:translateX(17px);}
+
+/* STATUS TRAIL */
+.trail{display:flex;gap:0;margin-bottom:14px;flex-wrap:wrap;}
+.trail-step{display:flex;align-items:center;gap:6px;font-size:11px;font-weight:600;}
+.trail-dot{width:28px;height:28px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:13px;flex-shrink:0;}
+.trail-line{height:2px;width:24px;background:var(--wa-border);flex-shrink:0;}
+.trail-done .trail-dot{background:#dcf8c6;color:#065f46;}
+.trail-done .trail-line{background:var(--wa-light);}
+.trail-active .trail-dot{background:var(--wa-dark);color:#fff;}
+.trail-future .trail-dot{background:#f0f0f0;color:#aaa;}
+
+/* USER CARD (admin) */
+.ucard{display:flex;align-items:center;justify-content:space-between;padding:12px 16px;border-bottom:1px solid #f0f0f0;flex-wrap:wrap;gap:8px;}
+.ucard:last-child{border-bottom:none;}
+.ucard-left{display:flex;align-items:center;gap:11px;}
+.ucard-av{width:38px;height:38px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:14px;flex-shrink:0;}
+.ucard-name{font-weight:600;font-size:13px;}
+.ucard-meta{font-size:11px;color:var(--wa-muted);margin-top:2px;}
+
+/* ROLE COLOR TAGS */
+.rtag{display:inline-block;font-size:10px;font-weight:700;text-transform:uppercase;padding:2px 7px;border-radius:5px;letter-spacing:.3px;}
+.rtag-admin{background:#fef3c7;color:#92400e;}
+.rtag-sales{background:#eff6ff;color:#1d4ed8;}
+.rtag-billing{background:#f3e8ff;color:#6b21a8;}
+.rtag-logistics{background:#ecfdf5;color:#065f46;}
+
+/* RESPONSIVE */
+@media(max-width:800px){
+  .hamburger{display:flex!important;}
+  .sidebar{position:fixed;left:-270px;top:0;bottom:0;z-index:800;transition:left .28s;box-shadow:none;}
+  .sidebar.open{left:0;box-shadow:4px 0 24px rgba(0,0,0,.2);}
+  .page{padding:14px;}
+  .stats-row{grid-template-columns:1fr 1fr;}
+  .g2{grid-template-columns:1fr;}
+  .g3{grid-template-columns:1fr 1fr;}
+  .prow{grid-template-columns:1fr 90px;}
+  /* Modal fixes for mobile */
+  .ov{padding:8px;align-items:flex-start;}
+  .mbox{border-radius:12px;width:100%;margin:8px auto;}
+  .mbox-lg{max-width:100%;}
+  .mb{max-height:60vh;padding:14px;}
+  .mh{padding:13px 14px;}
+  .mf{padding:10px 14px;}
+  .mh-title{font-size:13px;}
+}
+@media(max-width:480px){
+  .stats-row{grid-template-columns:1fr;}
+  .g3{grid-template-columns:1fr;}
+  .login-box{padding:28px 16px;}
+  .btn-xs{padding:7px 12px;font-size:12px;}
+  .btn-sm{padding:9px 14px;}
+  .mb{max-height:55vh;}
+}
+
+/* misc */
+.fw6{font-weight:600;}
+.c-green{color:var(--wa-dark);}
+.c-muted{color:var(--wa-muted);}
+.c-red{color:#dc2626;}
+.c-blue{color:#1d4ed8;}
+.c-orange{color:#d97706;}
+.mb4{margin-bottom:4px;}
+.mb8{margin-bottom:8px;}
+.mb12{margin-bottom:12px;}
+.sb-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.4);z-index:799;}
+.sb-overlay.open{display:block;}
+
+/* VEHICLE STATUS BADGES */
+.vs-onway   {background:#fff8e6;color:#92400e;border:1px solid #fde68a;}
+.vs-reached {background:#eff6ff;color:#1d4ed8;border:1px solid #bfdbfe;}
+.vs-loading {background:#ecfdf5;color:#065f46;border:1px solid #a7f3d0;}
+.vs-done    {background:#f3e8ff;color:#6b21a8;border:1px solid #e9d5ff;}
+
+/* VEHICLE STATUS PULSE */
+@keyframes pulse-dot{0%,100%{opacity:1}50%{opacity:.3}}
+.live-dot{display:inline-block;width:7px;height:7px;border-radius:50%;margin-right:4px;vertical-align:middle;animation:pulse-dot 1.6s infinite;}
+
+/* SHARED VEHICLE CARD */
+.sv-card{background:#fff;border:2px solid var(--wa-border);border-radius:11px;margin-bottom:10px;overflow:hidden;}
+.sv-card-head{background:var(--wa-panel);padding:10px 14px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:7px;border-bottom:1px solid var(--wa-border);}
+.sv-party-row{padding:9px 14px;border-bottom:1px solid #f5f5f5;display:flex;align-items:center;gap:10px;flex-wrap:wrap;}
+.sv-party-row:last-child{border-bottom:none;}
+
+/* BILLING VEHICLE GROUP */
+.bvg{background:#fff;border:2px dashed var(--wa-border);border-radius:11px;padding:13px;margin-bottom:10px;}
+.bvg.has-veh{border-style:solid;border-color:var(--wa-mid);}
+.bvg-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:10px;flex-wrap:wrap;gap:7px;}
+
+/* STATUS SELECTOR BUTTONS */
+.vstatus-btns{display:flex;gap:6px;flex-wrap:wrap;}
+.vstatus-btn{padding:5px 11px;border-radius:20px;font-size:11px;font-weight:700;cursor:pointer;border:1.5px solid transparent;font-family:inherit;transition:all .15s;}
+.vstatus-btn.sel-onway  {background:#fff8e6;color:#92400e;border-color:#fde68a;}
+.vstatus-btn.sel-reached{background:#eff6ff;color:#1d4ed8;border-color:#bfdbfe;}
+.vstatus-btn.sel-loading{background:#ecfdf5;color:#065f46;border-color:#a7f3d0;}
+.vstatus-btn:not(.sel-onway):not(.sel-reached):not(.sel-loading){background:var(--wa-panel);color:var(--wa-muted);border-color:var(--wa-border);}
+</style>
+</head>
+<body>
+
+<!-- ========== LOGIN ========== -->
+<div id="scr-login" class="screen active">
+  <div class="login-box">
+    <div class="login-logo">
+      <div class="app-icon">🏭</div>
+      <h1>SURYAANS PAPER</h1>
+      <p>Vehicle Planning System</p>
+    </div>
+    <div class="lf"><label>Username</label><input type="text" id="li-user" placeholder="Enter your username" autocomplete="username" onkeydown="if(event.key==='Enter')doLogin()"></div>
+    <div class="lf"><label>Password</label><input type="password" id="li-pass" placeholder="Enter password" autocomplete="current-password" onkeydown="if(event.key==='Enter')doLogin()"></div>
+    <div class="err-msg" id="li-err">Invalid username or password.</div>
+    <button class="btn-login" onclick="doLogin()">Sign In</button>
+    <div class="login-footer">🔒 Secure company access only</div>
+    <div style="text-align:center;margin-top:14px;">
+      <button onclick="hardReset()" style="background:none;border:none;color:var(--wa-muted);font-size:11px;cursor:pointer;font-family:inherit;text-decoration:underline;">
+        Having trouble? Clear cache &amp; reload
+      </button>
+    </div>
+  </div>
+</div>
+
+<!-- ========== MAIN APP ========== -->
+<div id="scr-app" class="screen">
+
+  <!-- SIDEBAR OVERLAY (mobile) -->
+  <div class="sb-overlay" id="sb-overlay" onclick="closeSb()"></div>
+
+  <!-- SIDEBAR -->
+  <div class="sidebar" id="sidebar">
+    <div class="sb-header">
+      <div class="sb-brand">
+        <div class="sb-icon">🏭</div>
+        <div>
+          <div class="sb-title">SURYAANS PAPER</div>
+          <div class="sb-subtitle">Vehicle Planning System</div>
+        </div>
+      </div>
+    </div>
+    <div class="sb-user" id="sb-user-card">
+      <div class="sb-av" id="sb-av">A</div>
+      <div>
+        <div class="sb-uname" id="sb-uname">User</div>
+        <div class="sb-urole" id="sb-urole">Role</div>
+      </div>
+    </div>
+    <div class="sb-nav" id="sb-nav"></div>
+    <div class="sb-logout">
+      <button class="btn-logout" onclick="doLogout()">↩ Sign Out</button>
+    </div>
+  </div>
+
+  <!-- MAIN -->
+  <div class="main-area">
+    <div class="topbar">
+      <button class="hamburger" onclick="toggleSb()">☰</button>
+      <div>
+        <div class="topbar-title" id="tb-title">Dashboard</div>
+        <div class="topbar-sub" id="tb-sub"></div>
+      </div>
+      <div class="topbar-right" id="tb-right"></div>
+    </div>
+    <div class="page-content" id="pages">
+
+      <!-- DASHBOARD -->
+      <div class="page" id="pg-dashboard">
+        <div class="ph"><div class="ph-left"><h2>Dashboard</h2><p id="dash-sub">Overview of today's operations</p></div><div id="dash-action"></div></div>
+        <div class="stats-row" id="dash-stats"></div>
+        <div id="dash-body"></div>
+      </div>
+
+      <!-- CREATE PLAN -->
+      <div class="page" id="pg-create-plan">
+        <div class="ph"><div class="ph-left"><h2>New Loading Plan</h2><p>Enter party wise details for today's dispatch</p></div></div>
+        <div class="wcard">
+          <div class="wcard-head"><div class="wcard-title">Plan Details</div></div>
+          <div class="wcard-body">
+            <div class="g2">
+              <div class="fg"><label>Plan Date</label><input class="inp" type="date" id="p-date" onchange="updateRef()"></div>
+              <div class="fg"><label>Plan No. (Auto)</label><input class="inp" type="text" id="p-ref" readonly></div>
+            </div>
+            <div class="fg"><label>Remarks / Notes</label><textarea class="inp" id="p-rem" rows="2" placeholder="Optional special instructions..."></textarea></div>
+            <div class="divider"></div>
+            <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:8px">
+              <div class="fw6">Party Details</div>
+              <button class="btn btn-sec btn-sm" onclick="addPRow()">+ Add Party</button>
+            </div>
+            <div style="display:grid;grid-template-columns:1fr 100px 120px 32px;gap:7px;padding:0 2px;margin-bottom:6px">
+              <div style="font-size:10px;font-weight:700;text-transform:uppercase;color:var(--wa-muted)">Party Name</div>
+              <div style="font-size:10px;font-weight:700;text-transform:uppercase;color:var(--wa-muted)">Qty (MT)</div>
+              <div style="font-size:10px;font-weight:700;text-transform:uppercase;color:var(--wa-muted)">Material</div>
+              <div></div>
+            </div>
+            <div id="prows"></div>
+            <div class="divider"></div>
+            <div style="display:flex;gap:9px;justify-content:flex-end;flex-wrap:wrap">
+              <button class="btn btn-sec" onclick="goPage('my-plans')">Cancel</button>
+              <button class="btn btn-primary" id="btn-submit-plan" onclick="submitPlan()">Submit to Billing →</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- MY PLANS -->
+      <div class="page" id="pg-my-plans">
+        <div class="ph"><div class="ph-left"><h2>My Plans</h2><p>All submitted loading plans</p></div><div id="mp-action"></div></div>
+        <div class="filters" id="mp-filters">
+          <button class="fp active" onclick="filterMP('all',this)">All</button>
+          <button class="fp" onclick="filterMP('pending_billing',this)">Pending</button>
+          <button class="fp" onclick="filterMP('billing_done',this)">Verified</button>
+          <button class="fp" onclick="filterMP('vehicles_arranged',this)">Arranged</button>
+          <button class="fp" onclick="filterMP('loading_done',this)">Done</button>
+        </div>
+        <div class="wcard"><div class="tbl-wrap"><table>
+          <thead><tr><th>Plan No.</th><th>Date</th><th>Parties</th><th>Total Qty</th><th>Status</th><th></th></tr></thead>
+          <tbody id="mp-body"></tbody>
+        </table></div></div>
+      </div>
+
+      <!-- BILLING INBOX -->
+      <div class="page" id="pg-billing-inbox">
+        <div class="ph"><div class="ph-left"><h2>Incoming Plans</h2><p>Verify and assign city & vehicle requirements</p></div></div>
+        <div id="bi-body"></div>
+      </div>
+
+      <!-- BILLING DONE -->
+      <div class="page" id="pg-billing-done">
+        <div class="ph"><div class="ph-left"><h2>Verified Plans</h2><p>Plans forwarded to logistics</p></div></div>
+        <div class="wcard"><div class="tbl-wrap"><table>
+          <thead><tr><th>Plan No.</th><th>Date</th><th>Cities</th><th>Vehicles</th><th>Status</th><th></th></tr></thead>
+          <tbody id="bd-body"></tbody>
+        </table></div></div>
+      </div>
+
+      <!-- LOGISTICS INBOX -->
+      <div class="page" id="pg-logistics-inbox">
+        <div class="ph"><div class="ph-left"><h2>Vehicle Planning</h2><p>Arrange vehicles city-wise as per billing requirement</p></div></div>
+        <div id="li-body"></div>
+      </div>
+
+      <!-- ACTIVE LOADING -->
+      <div class="page" id="pg-active-loading">
+        <div class="ph"><div class="ph-left"><h2>Active Loading</h2><p>Vehicles dispatched — mark loading done after completion</p></div></div>
+        <div id="al-body"></div>
+      </div>
+
+      <!-- VEHICLE STATUS TRACKER -->
+      <div class="page" id="pg-vehicle-status">
+        <div class="ph"><div class="ph-left"><h2>Vehicle Status Tracker</h2><p>Track vehicle arrival — On the Way · Reached · In Loading</p></div></div>
+        <div id="vs-body"></div>
+      </div>
+
+      <!-- LOADING REPORTS -->
+      <div class="page" id="pg-loading-reports">
+        <div class="ph"><div class="ph-left"><h2>Loading Done Reports</h2><p>Completed dispatch records</p></div></div>
+        <div class="wcard"><div class="tbl-wrap"><table>
+          <thead><tr><th>Plan No.</th><th>Date</th><th>Cities</th><th>Vehicles</th><th>Status</th><th>Last Done At</th><th>Confirmed By</th><th></th></tr></thead>
+          <tbody id="lr-body"></tbody>
+        </table></div></div>
+      </div>
+
+      <!-- ALL PLANS -->
+      <div class="page" id="pg-all-plans">
+        <div class="ph"><div class="ph-left"><h2>All Plans</h2><p>Complete pipeline overview</p></div></div>
+        <div class="filters">
+          <button class="fp active" onclick="filterAP('all',this)">All</button>
+          <button class="fp" onclick="filterAP('pending_billing',this)">Pending</button>
+          <button class="fp" onclick="filterAP('billing_done',this)">Verified</button>
+          <button class="fp" onclick="filterAP('vehicles_arranged',this)">Arranged</button>
+          <button class="fp" onclick="filterAP('loading_done',this)">Done</button>
+        </div>
+        <div class="wcard"><div class="tbl-wrap"><table>
+          <thead><tr><th>Plan No.</th><th>Date</th><th>By</th><th>Parties</th><th>Qty</th><th>Cities</th><th>Vehicles</th><th>Status</th><th></th></tr></thead>
+          <tbody id="ap-body"></tbody>
+        </table></div></div>
+      </div>
+
+      <!-- ADMIN: USER MANAGEMENT -->
+      <div class="page" id="pg-admin-users">
+        <div class="ph">
+          <div class="ph-left"><h2>User Management</h2><p>Create users and assign department permissions</p></div>
+          <button class="btn btn-primary" onclick="openAddUser()">+ Add User</button>
+        </div>
+        <div class="wcard">
+          <div class="wcard-head"><div class="wcard-title">System Users</div></div>
+          <div id="users-list"></div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<!-- ===== MODALS ===== -->
+
+<!-- View Plan -->
+<div class="ov" id="ov-view">
+  <div class="mbox mbox-lg">
+    <div class="mh"><div class="mh-title">Plan Details</div><button class="mclose" onclick="cm('ov-view')">×</button></div>
+    <div class="mb" id="ov-view-body"></div>
+  </div>
+</div>
+
+<!-- Billing Verify -->
+<div class="ov" id="ov-billing">
+  <div class="mbox mbox-lg">
+    <div class="mh"><div class="mh-title">✅ Verify Plan — Assign City & Vehicle</div><button class="mclose" onclick="cm('ov-billing')">×</button></div>
+    <div class="mb" id="ov-billing-body"></div>
+    <div class="mf">
+      <button class="btn btn-sec" onclick="cm('ov-billing')">Cancel</button>
+      <button class="btn btn-primary" onclick="submitBilling()">Forward to Logistics →</button>
+    </div>
+  </div>
+</div>
+
+<!-- Logistics Arrange -->
+<div class="ov" id="ov-logistics">
+  <div class="mbox mbox-lg">
+    <div class="mh"><div class="mh-title">🚛 Arrange Vehicles — Save One by One</div><button class="mclose" onclick="closeLogisticsModal()">×</button></div>
+    <div class="mb" id="ov-logistics-body"></div>
+    <div class="mf">
+      <button class="btn btn-sec" onclick="closeLogisticsModal()">Close</button>
+      <button class="btn btn-primary" onclick="submitArrangement()">✓ Done &amp; Close</button>
+    </div>
+  </div>
+</div>
+
+<!-- Loading Done -->
+<div class="ov" id="ov-loading">
+  <div class="mbox">
+    <div class="mh"><div class="mh-title">✅ Mark Loading Done</div><button class="mclose" onclick="cm('ov-loading')">×</button></div>
+    <div class="mb" id="ov-loading-body"></div>
+    <div class="mf">
+      <button class="btn btn-sec" onclick="cm('ov-loading')">Cancel</button>
+      <button class="btn btn-success" onclick="submitLoadingDone()">Confirm Loading Done</button>
+    </div>
+  </div>
+</div>
+
+<!-- Vehicle Status Update -->
+<div class="ov" id="ov-vstatus">
+  <div class="mbox mbox-lg">
+    <div class="mh"><div class="mh-title">🚛 Update Vehicle Status</div><button class="mclose" onclick="cm('ov-vstatus')">×</button></div>
+    <div class="mb" id="ov-vstatus-body"></div>
+    <div class="mf">
+      <button class="btn btn-sec" onclick="cm('ov-vstatus')">Cancel</button>
+      <button class="btn btn-primary" onclick="submitVehicleStatus()">Save Status</button>
+    </div>
+  </div>
+</div>
+
+<!-- Add/Edit User -->
+<div class="ov" id="ov-user">
+  <div class="mbox">
+    <div class="mh"><div class="mh-title" id="ov-user-title">Add User</div><button class="mclose" onclick="cm('ov-user')">×</button></div>
+    <div class="mb">
+      <div class="g2">
+        <div class="fg"><label>Full Name</label><input class="inp" type="text" id="u-name" placeholder="User's full name"></div>
+        <div class="fg"><label>Username (Login)</label><input class="inp" type="text" id="u-uname" placeholder="e.g. rajesh01"></div>
+      </div>
+      <div class="g2">
+        <div class="fg"><label>Password</label><input class="inp" type="password" id="u-pass" placeholder="Set password"></div>
+        <div class="fg"><label>Department / Role</label>
+          <select class="inp" id="u-role" onchange="renderPermUI()">
+            <option value="">Select role...</option>
+            <option value="sales">Sales Head</option>
+            <option value="billing">Billing Team</option>
+            <option value="logistics">Logistics Team</option>
+            <option value="admin">Admin</option>
+          </select>
+        </div>
+      </div>
+      <div class="divider"></div>
+      <div class="fw6 mb8">Permissions</div>
+      <div id="perm-ui">
+        <div class="alert alert-info">Select a role above to set permissions.</div>
+      </div>
+    </div>
+    <div class="mf">
+      <button class="btn btn-sec" onclick="cm('ov-user')">Cancel</button>
+      <button class="btn btn-primary" onclick="saveUserForm()">Save User</button>
+    </div>
+  </div>
+</div>
+
+<!-- Change Password (self) -->
+<div class="ov" id="ov-chpw">
+  <div class="mbox">
+    <div class="mh"><div class="mh-title">Change Password</div><button class="mclose" onclick="cm('ov-chpw')">×</button></div>
+    <div class="mb">
+      <div class="fg"><label>Current Password</label><input class="inp" type="password" id="cp-old" placeholder="Current password"></div>
+      <div class="fg"><label>New Password</label><input class="inp" type="password" id="cp-new" placeholder="New password (min 4 chars)"></div>
+      <div class="fg"><label>Confirm New Password</label><input class="inp" type="password" id="cp-con" placeholder="Repeat new password"></div>
+      <div class="err-msg" id="cp-err" style="display:none"></div>
+    </div>
+    <div class="mf">
+      <button class="btn btn-sec" onclick="cm('ov-chpw')">Cancel</button>
+      <button class="btn btn-primary" onclick="changePassword()">Update Password</button>
+    </div>
+  </div>
+</div>
+
+<script type="module">
+
+// =============================================
+//  FIREBASE CONFIG & INIT
+// =============================================
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+import { getFirestore, doc, getDoc, setDoc, updateDoc, deleteDoc,
+         collection, onSnapshot, query, orderBy, serverTimestamp
+       } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+
+const firebaseConfig = {
+  apiKey: "AIzaSyBT0irERYvH8rqsaN2Xn1JLiz4g02Ha5do",
+  authDomain: "suryaans-vps.firebaseapp.com",
+  projectId: "suryaans-vps",
+  storageBucket: "suryaans-vps.firebasestorage.app",
+  messagingSenderId: "23442264442",
+  appId: "1:23442264442:web:5e7791195674d60a9d46c3"
+};
+
+const fbApp  = initializeApp(firebaseConfig);
+const db     = getFirestore(fbApp);
+
+// =============================================
+//  DB — in-memory mirror (same shape as before)
+//  Firestore collections: "users", "plans", "meta"
+// =============================================
+let DB = { users:[], plans:[], counter:{} };
+let ME = null; // logged-in user object
+let _unsubPlans = null; // firestore real-time listener
+let _unsubUsers = null;
+
+// ---- Loading overlay helpers ----
+function showLoading(msg='Loading…'){
+  let el=document.getElementById('fb-loading');
+  if(!el){
+    el=document.createElement('div');
+    el.id='fb-loading';
+    el.style.cssText='position:fixed;inset:0;background:rgba(7,94,84,.82);display:flex;flex-direction:column;align-items:center;justify-content:center;z-index:9999;color:#fff;font-family:inherit;gap:14px;';
+    el.innerHTML='<div style="font-size:34px">🏭</div><div id="fb-loading-msg" style="font-size:15px;font-weight:600;text-align:center;padding:0 20px"></div><div style="width:44px;height:44px;border:4px solid rgba(255,255,255,.3);border-top-color:#fff;border-radius:50%;animation:spin .8s linear infinite"></div>';
+    const style=document.createElement('style');
+    style.textContent='@keyframes spin{to{transform:rotate(360deg)}}';
+    document.head.appendChild(style);
+    document.body.appendChild(el);
+  }
+  document.getElementById('fb-loading-msg').textContent=msg;
+  el.style.display='flex';
+}
+function hideLoading(){ const el=document.getElementById('fb-loading'); if(el)el.style.display='none'; }
+
+// ---- Firestore helpers ----
+async function fsGetDoc(col, id){
+  const snap = await getDoc(doc(db, col, id));
+  return snap.exists() ? snap.data() : null;
+}
+async function fsSetDoc(col, id, data){ await setDoc(doc(db, col, id), data); }
+async function fsUpdateDoc(col, id, data){ await updateDoc(doc(db, col, id), data); }
+async function fsDeleteDoc(col, id){ await deleteDoc(doc(db, col, id)); }
+
+// ---- Save entire DB state for a plan ----
+async function savePlan(plan){
+  try{
+    await fsSetDoc('plans', plan.id, plan);
+  }catch(e){ toast('Save failed: '+e.message,'err'); }
+}
+
+async function deletePlanFS(id){
+  try{ await fsDeleteDoc('plans', id); }
+  catch(e){ toast('Delete failed: '+e.message,'err'); }
+}
+
+async function saveUser(userObj){
+  try{ await fsSetDoc('users', userObj.id, userObj); }
+  catch(e){ toast('Save failed: '+e.message,'err'); }
+}
+async function deleteUserFS(id){
+  try{ await fsDeleteDoc('users', id); }
+  catch(e){ toast('Delete failed: '+e.message,'err'); }
+}
+
+async function saveCounter(counter){
+  try{ await fsSetDoc('meta','counter', counter); }
+  catch(e){ console.error('Counter save failed',e); }
+}
+
+// ---- Load initial data from Firestore ----
+async function loadDB(){
+  showLoading('Connecting to database…');
+  try{
+    // Load counter
+    const ctr = await fsGetDoc('meta','counter');
+    DB.counter = ctr || {};
+
+    // Load users once
+    const usersSnap = await import("https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js")
+      .then(m => m.getDocs(m.collection(db,'users')));
+    DB.users = usersSnap.docs.map(d=>d.data());
+
+    // Seed admin if no users exist
+    if(!DB.users.find(u=>u.username==='admin')){
+      const admin = {
+        id:'u-admin', name:'Administrator', username:'admin', password:'admin123',
+        role:'admin', active:true,
+        perms:{ view:true, add:true, edit:true, delete:true }
+      };
+      await saveUser(admin);
+      DB.users = [admin];
+    }
+
+    // Load plans once (for initial render)
+    const plansSnap = await import("https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js")
+      .then(m => m.getDocs(m.collection(db,'plans')));
+    DB.plans = plansSnap.docs.map(d=>d.data());
+
+  }catch(e){
+    hideLoading();
+    showDbError(e);
+    return;
+  }
+  hideLoading();
+  showLoginScreen();
+}
+
+function showDbError(e){
+  document.body.innerHTML=`<div style="min-height:100vh;background:#075e54;display:flex;align-items:center;justify-content:center;padding:20px;font-family:Inter,sans-serif">
+    <div style="background:#fff;border-radius:16px;padding:36px;max-width:420px;width:100%;text-align:center">
+      <div style="font-size:40px;margin-bottom:12px">⚠️</div>
+      <h2 style="color:#dc2626;margin-bottom:8px">Database Connection Failed</h2>
+      <p style="color:#667781;font-size:13px;margin-bottom:18px">Could not connect to Firebase. Check your internet connection and try again.</p>
+      <p style="color:#aaa;font-size:11px;background:#f5f5f5;padding:8px;border-radius:6px;word-break:break-all">${e.message}</p>
+      <button onclick="location.reload()" style="margin-top:18px;background:#075e54;color:#fff;border:none;border-radius:9px;padding:11px 28px;font-size:14px;font-weight:600;cursor:pointer">Retry</button>
+    </div>
+  </div>`;
+}
+
+function showLoginScreen(){
+  document.getElementById('scr-login').classList.add('active');
+  // Start real-time listeners for plans and users
+  startRealtimeListeners();
+}
+
+// ---- Real-time Firestore listeners ----
+function startRealtimeListeners(){
+  // Plans listener
+  if(_unsubPlans) _unsubPlans();
+  _unsubPlans = onSnapshot(collection(db,'plans'), snap=>{
+    DB.plans = snap.docs.map(d=>d.data());
+    if(ME){ updateBadges(); renderPage(curPage); }
+  }, err=>console.error('Plans listener error',err));
+
+  // Users listener
+  if(_unsubUsers) _unsubUsers();
+  _unsubUsers = onSnapshot(collection(db,'users'), snap=>{
+    DB.users = snap.docs.map(d=>d.data());
+    // Refresh user management page if open
+    if(ME && curPage==='admin-users') renderAdminUsers();
+  }, err=>console.error('Users listener error',err));
+}
+
+// =============================================
+//  AUTH
+// =============================================
+function doLogin(){
+  const u=document.getElementById('li-user').value.trim().toLowerCase();
+  const p=document.getElementById('li-pass').value;
+  const err=document.getElementById('li-err');
+  const user=DB.users.find(x=>x.username===u && x.password===p && x.active!==false);
+  if(!user){ err.style.display='block'; return; }
+  err.style.display='none';
+  ME=user;
+  showApp();
+}
+function doLogout(){
+  ME=null;
+  document.getElementById('scr-login').classList.add('active');
+  document.getElementById('scr-app').classList.remove('active');
+  document.getElementById('li-user').value='';
+  document.getElementById('li-pass').value='';
+}
+function showApp(){
+  document.getElementById('scr-login').classList.remove('active');
+  document.getElementById('scr-app').classList.add('active');
+  const colors={admin:'#075e54',sales:'#1d4ed8',billing:'#6b21a8',logistics:'#065f46'};
+  const bgs={admin:'#ecfdf5',sales:'#eff6ff',billing:'#f3e8ff',logistics:'#dcf8c6'};
+  const av=document.getElementById('sb-av');
+  av.textContent=ME.name.charAt(0).toUpperCase();
+  av.style.background=bgs[ME.role]||'#eee';
+  av.style.color=colors[ME.role]||'#333';
+  document.getElementById('sb-uname').textContent=ME.name;
+  document.getElementById('sb-urole').textContent=ROLE_LABELS[ME.role]||ME.role;
+  buildSidebar();
+  updateBadges();
+  goPage('dashboard');
+}
+
+// =============================================
+//  ROLE DEFINITIONS
+// =============================================
+const ROLE_LABELS={admin:'Administrator',sales:'Sales Head',billing:'Billing Team',logistics:'Logistics Team'};
+const ROLE_ICONS={admin:'⚙️',sales:'📊',billing:'📋',logistics:'🚛'};
+const PERM_DEFAULTS={
+  sales:    {view:true,  add:true,  edit:false, delete:false},
+  billing:  {view:true,  add:false, edit:true,  delete:false},
+  logistics:{view:true,  add:false, edit:true,  delete:false},
+  admin:    {view:true,  add:true,  edit:true,  delete:true}
+};
+function canDo(perm){ return ME && (ME.role==='admin' || (ME.perms && ME.perms[perm])); }
+
+// =============================================
+//  SIDEBAR BUILDER
+// =============================================
+function buildSidebar(){
+  const nav=document.getElementById('sb-nav');
+  let html='';
+  const addItem=(page,icon,label,badge='')=>`<div class="nav-item" data-page="${page}" onclick="goPage('${page}')">`+
+    `<span class="nav-icon">${icon}</span>${label}`+
+    (badge?`<span class="nav-badge" id="nb-${badge}">0</span>`:'')+`</div>`;
+  html+=`<div class="nav-group-lbl">Overview</div>`;
+  html+=addItem('dashboard','🏠','Dashboard');
+  if(ME.role==='admin'||ME.role==='sales'){
+    html+=`<div class="nav-group-lbl">Sales</div>`;
+    if(canDo('add')) html+=addItem('create-plan','➕','New Loading Plan');
+    html+=addItem('my-plans','📝','My Plans');
+  }
+  if(ME.role==='billing'){
+    html+=`<div class="nav-group-lbl">Billing Team</div>`;
+    html+=addItem('billing-inbox','📥','Incoming Plans','bb');
+    html+=addItem('billing-done','✅','Verified Plans');
+  }
+  if(ME.role==='logistics'){
+    html+=`<div class="nav-group-lbl">Logistics</div>`;
+    html+=addItem('logistics-inbox','🚛','Vehicle Planning','lb');
+    html+=addItem('vehicle-status','📡','Vehicle Status','vsb');
+    html+=addItem('active-loading','⚙️','Active Loading');
+    html+=addItem('loading-reports','📄','Loading Reports');
+  }
+  if(ME.role==='admin'){
+    html+=`<div class="nav-group-lbl">All Departments</div>`;
+    html+=addItem('billing-inbox','📥','Billing Inbox','bb');
+    html+=addItem('logistics-inbox','🚛','Vehicle Planning','lb');
+    html+=addItem('vehicle-status','📡','Vehicle Status','vsb');
+    html+=addItem('active-loading','⚙️','Active Loading');
+    html+=addItem('loading-reports','📄','Loading Reports');
+  }
+  html+=`<div class="nav-group-lbl">Reports</div>`;
+  html+=addItem('all-plans','📊','All Plans');
+  html+=`<div class="nav-group-lbl">Settings</div>`;
+  if(ME.role==='admin') html+=addItem('admin-users','👥','User Management');
+  html+=`<div class="nav-item" onclick="om('ov-chpw')"><span class="nav-icon">🔑</span>Change Password</div>`;
+  nav.innerHTML=html;
+}
+
+// =============================================
+//  NAVIGATION
+// =============================================
+const PAGE_META={
+  'dashboard':      {title:'Dashboard',          sub:'Today\'s operations overview'},
+  'create-plan':    {title:'New Loading Plan',    sub:'Enter party wise dispatch details'},
+  'my-plans':       {title:'My Plans',            sub:'All submitted loading plans'},
+  'billing-inbox':  {title:'Incoming Plans',      sub:'Verify and assign city & vehicle'},
+  'billing-done':   {title:'Verified Plans',      sub:'Forwarded to logistics'},
+  'logistics-inbox':{title:'Vehicle Planning',    sub:'Arrange vehicles city-wise'},
+  'vehicle-status': {title:'Vehicle Status',      sub:'Track arrival — On the Way · Reached · In Loading'},
+  'active-loading': {title:'Active Loading',      sub:'Mark loading done after completion'},
+  'loading-reports':{title:'Loading Reports',     sub:'Completed dispatch records'},
+  'all-plans':      {title:'All Plans',           sub:'Complete pipeline overview'},
+  'admin-users':    {title:'User Management',     sub:'Create & manage system users'}
+};
+let curPage='dashboard';
+function goPage(page){
+  document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
+  document.querySelectorAll('.nav-item').forEach(n=>n.classList.remove('active'));
+  const pg=document.getElementById('pg-'+page);
+  if(!pg){ goPage('dashboard'); return; }
+  pg.classList.add('active');
+  curPage=page;
+  const ni=document.querySelector(`.nav-item[data-page="${page}"]`);
+  if(ni)ni.classList.add('active');
+  const meta=PAGE_META[page]||{title:page,sub:''};
+  document.getElementById('tb-title').textContent=meta.title;
+  document.getElementById('tb-sub').textContent=meta.sub;
+  closeSb();
+  renderPage(page);
+}
+function toggleSb(){
+  document.getElementById('sidebar').classList.toggle('open');
+  document.getElementById('sb-overlay').classList.toggle('open');
+}
+function closeSb(){
+  document.getElementById('sidebar').classList.remove('open');
+  document.getElementById('sb-overlay').classList.remove('open');
+}
+function om(id){ closeSb(); const el=document.getElementById(id); if(el){el.classList.add('open');el.scrollTop=0;} }
+function cm(id){ document.getElementById(id).classList.remove('open'); }
+
+// =============================================
+//  PLAN NO. — KF-DDMMYYYY-001
+// =============================================
+async function genPlanNo(dateStr){
+  const d=new Date(dateStr);
+  const dd=String(d.getDate()).padStart(2,'0'),mm=String(d.getMonth()+1).padStart(2,'0'),yyyy=d.getFullYear();
+  const k=`${dd}${mm}${yyyy}`;
+  DB.counter[k]=(DB.counter[k]||0)+1;
+  await saveCounter(DB.counter);
+  return `KF-${dd}${mm}${yyyy}-${String(DB.counter[k]).padStart(3,'0')}`;
+}
+function previewPlanNo(dateStr){
+  if(!dateStr)return'';
+  const d=new Date(dateStr);
+  const dd=String(d.getDate()).padStart(2,'0'),mm=String(d.getMonth()+1).padStart(2,'0'),yyyy=d.getFullYear();
+  const k=`${dd}${mm}${yyyy}`;
+  return `KF-${dd}${mm}${yyyy}-${String((DB.counter[k]||0)+1).padStart(3,'0')}`;
+}
+function updateRef(){
+  const d=document.getElementById('p-date').value;
+  document.getElementById('p-ref').value=d?previewPlanNo(d):'';
+}
+function initPlanForm(){
+  const today=new Date().toISOString().split('T')[0];
+  document.getElementById('p-date').value=today;
+  document.getElementById('p-rem').value='';
+  document.getElementById('prows').innerHTML='';
+  updateRef();
+  addPRow();
+  document.getElementById('btn-submit-plan').style.display=canDo('add')?'':'none';
+}
+
+// =============================================
+//  PARTY ROWS
+// =============================================
+const MATS=['Kraft Paper','Angel Board'];
+const VEH_TYPES=['LCV (3–5 MT)','6 Wheeler (8–10 MT)','8 Wheeler (12–15 MT)','10 Wheeler (18–20 MT)','12 Wheeler (22–25 MT)','14 Wheeler (28–30 MT)','Trailer (38–40 MT)'];
+
+function addPRow(n='',q='',m=''){
+  const id='pr'+Date.now()+Math.random().toString(36).slice(2,5);
+  const mo=MATS.map(x=>`<option value="${x}"${x===m?' selected':''}>${x}</option>`).join('');
+  const div=document.createElement('div');div.className='prow';div.id=id;
+  div.innerHTML=`
+    <input class="inp pn" type="text" placeholder="Party / Company Name" value="${n}">
+    <input class="inp pq" type="number" placeholder="MT" min="0.5" step="0.5" value="${q}">
+    <select class="inp pm"><option value="">Material</option>${mo}</select>
+    <button onclick="document.getElementById('${id}').remove()" style="background:#fef2f2;border:1px solid #fca5a5;color:#dc2626;border-radius:7px;cursor:pointer;font-size:12px;padding:6px 8px;font-family:inherit;">✕</button>
+  `;
+  document.getElementById('prows').appendChild(div);
+}
+
+async function submitPlan(){
+  if(!canDo('add')){toast('No permission to add plans','err');return;}
+  const date=document.getElementById('p-date').value;
+  const rem=document.getElementById('p-rem').value.trim();
+  if(!date){toast('Select a plan date','warn');return;}
+  const rows=document.querySelectorAll('#prows .prow');
+  if(!rows.length){toast('Add at least one party','warn');return;}
+  const parties=[];let ok=true;
+  rows.forEach(r=>{
+    const n=r.querySelector('.pn').value.trim();
+    const q=parseFloat(r.querySelector('.pq').value);
+    const m=r.querySelector('.pm').value;
+    if(!n||!q||q<=0||!m){ok=false;}
+    else parties.push({name:n,qty:q,mat:m});
+  });
+  if(!ok||!parties.length){toast('Fill all party details (name, qty, material)','warn');return;}
+  const btn=document.getElementById('btn-submit-plan');
+  btn.disabled=true; btn.textContent='Saving…';
+  try{
+    const planNo=await genPlanNo(date);
+    const plan={
+      id:planNo, date, remarks:rem, parties,
+      totalQty:parties.reduce((s,p)=>s+p.qty,0),
+      status:'pending_billing',
+      createdBy:ME.name, createdById:ME.id, createdAt:new Date().toISOString(),
+      billingRows:null, billedBy:null, billedAt:null,
+      vehicles:null, arrangedBy:null, arrangedAt:null,
+      loadingDone:null
+    };
+    await savePlan(plan);
+    toast('Plan '+planNo+' submitted to Billing ✓','ok');
+    initPlanForm();
+    goPage('my-plans');
+  }catch(e){ toast('Error saving plan: '+e.message,'err'); }
+  finally{ btn.disabled=false; btn.textContent='Submit to Billing →'; }
+}
+
+// =============================================
+//  BILLING
+// =============================================
+let curBP=null, bilGroups=[];
+
+function openBilling(planId){
+  if(!canDo('edit')&&ME.role!=='billing'){toast('No permission','err');return;}
+  const p=DB.plans.find(x=>x.id===planId);if(!p)return;
+  curBP=p;
+  if(p.billingGroups && p.billingGroups.length){
+    bilGroups=p.billingGroups.map(g=>{
+      const vr=g.vehicleRows||[{type:g.vehicleType||'',capacity:g.vehicleCapacity||'',count:g.vehicleCount||1}];
+      return{...g,vehicleRows:vr,parties:g.parties.map(pt=>({...pt}))};
+    });
+  } else {
+    bilGroups=[{
+      id:'bg'+Date.now(), vehicleType:'', vehicleCapacity:0, vehicleCount:1, city:'',
+      vehicleRows:[{type:'',capacity:'',count:1}],
+      parties: p.parties.map(pt=>({partyName:pt.name, qty:pt.qty, mat:pt.mat}))
+    }];
+  }
+  renderBillingMod(); om('ov-billing');
+}
+
+function renderBillingMod(){
+  const p=curBP;
+  let h=`<div class="alert alert-info">📋 Plan <strong>${p.id}</strong> &nbsp;|&nbsp; Date: ${fd(p.date)} &nbsp;|&nbsp; Total: <strong>${p.totalQty} MT</strong><br>
+  <span style="font-size:11px;opacity:.8">All parties are grouped into one vehicle by default. You can split them into separate vehicles using the "+ Add Vehicle Group" button.</span></div>`;
+  h+=`<div id="bvg-container">`;
+  bilGroups.forEach((grp,gi)=>{ h+=buildBVGCard(grp,gi,p.parties); });
+  h+=`</div>
+  <button class="btn btn-sec btn-sm" onclick="addBVG()" style="margin-top:6px">+ Add Vehicle Group</button>`;
+  document.getElementById('ov-billing-body').innerHTML=h;
+}
+
+function buildBVGCard(grp,gi,allParties){
+  const vRows=grp.vehicleRows||[{type:grp.vehicleType||'',capacity:grp.vehicleCapacity||'',count:grp.vehicleCount||1}];
+  const totalVehicles=vRows.reduce((s,r)=>s+(parseInt(r.count)||0),0);
+  const totalCap=vRows.reduce((s,r)=>s+((parseFloat(r.capacity)||0)*(parseInt(r.count)||0)),0);
+  const grpQty=grp.parties.reduce((s,pt)=>s+pt.qty,0);
+  let h=`<div class="bvg ${vRows[0].type?'has-veh':''}" id="bvg-${gi}">
+    <div class="bvg-head">
+      <div class="fw6" style="font-size:13px;color:var(--wa-dark)">🚛 Vehicle Group ${gi+1}
+        <span style="font-weight:400;font-size:12px;color:var(--wa-muted)">&nbsp;— ${grpQty} MT material</span>
+      </div>
+      ${bilGroups.length>1?`<button onclick="removeBVG(${gi})" style="background:#fef2f2;border:1px solid #fca5a5;color:#dc2626;border-radius:6px;padding:3px 9px;font-size:11px;cursor:pointer;font-family:inherit">✕ Remove Group</button>`:''}
+    </div>
+    <div class="fg" style="margin-bottom:8px">
+      <label>Destination City</label>
+      <input class="inp inp-sm" id="bvg-city-${gi}" type="text" placeholder="e.g. Chennai, Surat, Mumbai..." value="${grp.city}" onblur="bilGroups[${gi}].city=this.value.trim()" autocomplete="off">
+    </div>
+    <div style="font-size:10px;font-weight:700;text-transform:uppercase;color:var(--wa-muted);margin-bottom:6px">Vehicle Types &amp; Capacity</div>
+    <div style="display:grid;grid-template-columns:1fr 1fr 80px 32px;gap:6px;padding:0 2px;margin-bottom:5px">
+      <div style="font-size:10px;font-weight:700;color:var(--wa-muted);text-transform:uppercase">Vehicle Type</div>
+      <div style="font-size:10px;font-weight:700;color:var(--wa-muted);text-transform:uppercase">Capacity (MT each)</div>
+      <div style="font-size:10px;font-weight:700;color:var(--wa-muted);text-transform:uppercase">Count</div>
+      <div></div>
+    </div>
+    <div id="vrows-${gi}">`;
+  vRows.forEach((vr,ri)=>{
+    const vOpts=VEH_TYPES.map(v=>`<option value="${v}"${v===vr.type?' selected':''}>${v}</option>`).join('');
+    h+=`<div style="display:grid;grid-template-columns:1fr 1fr 80px 32px;gap:6px;margin-bottom:6px;align-items:center" id="vr-${gi}-${ri}">
+      <select class="inp inp-sm" onchange="bilGroups[${gi}].vehicleRows[${ri}].type=this.value;updateBVGBorder(${gi})">
+        <option value="">Select type</option>${vOpts}
+      </select>
+      <input class="inp inp-sm" type="number" placeholder="e.g. 20" min="1" max="50" step="0.5" value="${vr.capacity||''}" onblur="bilGroups[${gi}].vehicleRows[${ri}].capacity=parseFloat(this.value)||0;updateBVGCalc(${gi})">
+      <input class="inp inp-sm" type="number" placeholder="1" min="1" max="20" step="1" value="${vr.count||1}" onblur="bilGroups[${gi}].vehicleRows[${ri}].count=parseInt(this.value)||1;updateBVGCalc(${gi})">
+      <button onclick="removeVRow(${gi},${ri})" style="background:#fef2f2;border:1px solid #fca5a5;color:#dc2626;border-radius:6px;cursor:pointer;font-size:13px;padding:4px 8px">✕</button>
+    </div>`;
+  });
+  h+=`</div>
+    <button onclick="addVRow(${gi})" class="btn btn-sec btn-xs" style="margin-bottom:10px">+ Add Another Vehicle Type</button>
+    <div style="background:#e7f5f4;border-radius:7px;padding:8px 12px;font-size:12px;color:var(--wa-dark);margin-bottom:10px">
+      📊 Material: <strong>${grpQty} MT</strong> &nbsp;|&nbsp;
+      Total Capacity: <strong>${totalCap>0?totalCap+' MT':'—'}</strong> &nbsp;|&nbsp;
+      Total Vehicles: <strong>${totalVehicles}</strong>
+      ${totalCap>0&&totalCap<grpQty?`&nbsp;⚠️ <span style="color:#dc2626">Capacity (${totalCap}MT) less than material (${grpQty}MT)</span>`:''}
+      ${totalCap>0&&totalCap>=grpQty?`&nbsp;✅`:''}
+    </div>
+    <div style="font-size:10px;font-weight:700;text-transform:uppercase;color:var(--wa-muted);margin-bottom:7px">Parties in this vehicle group</div>`;
+  grp.parties.forEach((pt,pi)=>{
+    h+=`<div style="display:flex;align-items:center;gap:8px;padding:9px 11px;background:var(--wa-panel);border-radius:8px;margin-bottom:6px;flex-wrap:wrap">
+      <div style="flex:1;min-width:130px"><span class="fw6" style="font-size:13px">${pt.partyName}</span><span style="font-size:11px;color:var(--wa-muted);margin-left:5px">${pt.mat}</span></div>
+      <span style="font-size:13px;font-weight:700;color:var(--wa-dark)">${pt.qty} MT</span>
+      ${grp.parties.length>1?`<button onclick="removePartyFromBVG(${gi},${pi})" style="background:#fef2f2;border:1px solid #fca5a5;color:#dc2626;border-radius:6px;padding:3px 9px;font-size:11px;cursor:pointer;font-family:inherit">Move out</button>`:''}
+    </div>`;
+  });
+  const assignedNames=bilGroups.flatMap(g=>g.parties.map(pt=>pt.partyName));
+  const available=allParties.filter(pt=>!assignedNames.includes(pt.name));
+  if(available.length){
+    const opts=available.map(pt=>`<option value="${pt.name}">${pt.name} (${pt.qty} MT)</option>`).join('');
+    h+=`<div style="display:flex;gap:7px;align-items:center;margin-top:5px;flex-wrap:wrap">
+      <select class="inp inp-sm" id="add-ps-${gi}" style="flex:1;min-width:160px"><option value="">+ Add another party to this group...</option>${opts}</select>
+      <button class="btn btn-sec btn-xs" onclick="addPartyToBVG(${gi})">Add →</button>
+    </div>`;
+  }
+  h+=`</div>`;
+  return h;
+}
+
+function ensureVRows(gi){ const g=bilGroups[gi]; if(!g.vehicleRows||!g.vehicleRows.length){g.vehicleRows=[{type:g.vehicleType||'',capacity:g.vehicleCapacity||'',count:g.vehicleCount||1}];} }
+function addVRow(gi){ ensureVRows(gi); bilGroups[gi].vehicleRows.push({type:'',capacity:'',count:1}); redrawBVGContainer(); }
+function removeVRow(gi,ri){ ensureVRows(gi); if(bilGroups[gi].vehicleRows.length<=1){toast('At least one vehicle type row required','warn');return;} bilGroups[gi].vehicleRows.splice(ri,1); redrawBVGContainer(); }
+function updateBVGCalc(gi){ redrawBVGContainer(); }
+function updateBVGBorder(gi){ const el=document.getElementById('bvg-'+gi); if(!el)return; if(bilGroups[gi].vehicleType)el.classList.add('has-veh'); else el.classList.remove('has-veh'); }
+function redrawBVGContainer(){
+  const container=document.getElementById('bvg-container'); if(!container)return;
+  bilGroups.forEach((grp,gi)=>{ const ci=document.getElementById('bvg-city-'+gi); if(ci)bilGroups[gi].city=ci.value.trim(); });
+  container.innerHTML=bilGroups.map((grp,i)=>buildBVGCard(grp,i,curBP.parties)).join('');
+}
+function flushAllBillingInputs(){
+  bilGroups.forEach((g,i)=>{
+    const ci=document.getElementById('bvg-city-'+i); if(ci)bilGroups[i].city=ci.value.trim();
+    ensureVRows(i);
+    const vRowContainer=document.getElementById('vrows-'+i);
+    if(vRowContainer){
+      bilGroups[i].vehicleRows.forEach((vr,ri)=>{
+        const rowEl=document.getElementById('vr-'+i+'-'+ri); if(!rowEl)return;
+        const sel=rowEl.querySelector('select'); const inputs=rowEl.querySelectorAll('input');
+        if(sel)bilGroups[i].vehicleRows[ri].type=sel.value;
+        if(inputs[0])bilGroups[i].vehicleRows[ri].capacity=parseFloat(inputs[0].value)||0;
+        if(inputs[1])bilGroups[i].vehicleRows[ri].count=parseInt(inputs[1].value)||1;
+      });
+    }
+    bilGroups[i].vehicleType=bilGroups[i].vehicleRows[0]?.type||'';
+    bilGroups[i].vehicleCapacity=bilGroups[i].vehicleRows[0]?.capacity||0;
+    bilGroups[i].vehicleCount=bilGroups[i].vehicleRows.reduce((s,r)=>s+(parseInt(r.count)||0),0);
+  });
+}
+function addBVG(){
+  flushAllBillingInputs();
+  const assigned=bilGroups.flatMap(g=>g.parties.map(pt=>pt.partyName));
+  const unassigned=curBP.parties.filter(pt=>!assigned.includes(pt.name));
+  if(!unassigned.length){toast('All parties already in a vehicle group','warn');return;}
+  bilGroups.push({id:'bg'+Date.now(),vehicleType:'',vehicleCapacity:0,vehicleCount:1,city:'',vehicleRows:[{type:'',capacity:'',count:1}],parties:[{partyName:unassigned[0].name,qty:unassigned[0].qty,mat:unassigned[0].mat}]});
+  redrawBVGContainer();
+  const mb=document.getElementById('ov-billing-body'); if(mb)setTimeout(()=>mb.scrollTop=mb.scrollHeight,50);
+}
+function removeBVG(gi){
+  if(bilGroups.length<=1){toast('At least one vehicle group required','warn');return;}
+  flushAllBillingInputs();
+  const removed=bilGroups[gi].parties; bilGroups.splice(gi,1);
+  removed.forEach(rp=>{ if(!bilGroups[0].parties.find(p=>p.partyName===rp.partyName))bilGroups[0].parties.push(rp); });
+  redrawBVGContainer();
+}
+function addPartyToBVG(gi){
+  const sel=document.getElementById('add-ps-'+gi); const name=sel?sel.value:''; if(!name)return;
+  const pt=curBP.parties.find(p=>p.name===name); if(!pt)return;
+  flushAllBillingInputs();
+  bilGroups.forEach(g=>{g.parties=g.parties.filter(gp=>gp.partyName!==name);});
+  bilGroups[gi].parties.push({partyName:pt.name,qty:pt.qty,mat:pt.mat});
+  redrawBVGContainer();
+}
+function removePartyFromBVG(gi,pi){
+  if(bilGroups[gi].parties.length<=1){toast('Last party in group — remove the group instead','warn');return;}
+  flushAllBillingInputs();
+  const pt=bilGroups[gi].parties[pi]; bilGroups[gi].parties.splice(pi,1);
+  bilGroups.push({id:'bg'+Date.now(),vehicleType:'',vehicleCapacity:0,vehicleCount:1,city:'',vehicleRows:[{type:'',capacity:'',count:1}],parties:[{partyName:pt.partyName,qty:pt.qty,mat:pt.mat}]});
+  redrawBVGContainer();
+}
+
+async function submitBilling(){
+  flushAllBillingInputs();
+  for(let g of bilGroups){
+    if(!g.city){toast('Enter destination city for all vehicle groups','warn');return;}
+    if(!g.vehicleRows||g.vehicleRows.every(r=>!r.type)){toast('Select at least one vehicle type per group','warn');return;}
+    for(let vr of g.vehicleRows){
+      if(!vr.type){toast('Select vehicle type in all vehicle rows','warn');return;}
+      if(!vr.capacity||vr.capacity<=0){toast('Enter vehicle capacity (MT) in all vehicle rows','warn');return;}
+      if(!vr.count||vr.count<1){toast('Enter vehicle count in all vehicle rows','warn');return;}
+    }
+    if(!g.parties.length){toast('Each group must have at least one party','warn');return;}
+  }
+  const assigned=bilGroups.flatMap(g=>g.parties.map(p=>p.partyName));
+  const missing=curBP.parties.find(pt=>!assigned.includes(pt.name));
+  if(missing){toast('Party "'+missing.name+'" not assigned to any group','warn');return;}
+  const btn=document.querySelector('#ov-billing .mf .btn-primary');
+  if(btn){btn.disabled=true;btn.textContent='Saving…';}
+  try{
+    curBP.billingGroups=bilGroups.map(g=>({...g,city:g.city.trim()}));
+    curBP.billingRows=bilGroups.map(g=>({city:g.city.trim(),vehicleRows:g.vehicleRows,vehicleType:g.vehicleType,vehicleCount:g.vehicleCount,vehicleCapacity:g.vehicleCapacity,parties:g.parties}));
+    curBP.status='billing_done'; curBP.billedBy=ME.name; curBP.billedAt=new Date().toISOString();
+    await savePlan(curBP);
+    cm('ov-billing'); toast('Forwarded to Logistics ✓','ok');
+  }catch(e){ toast('Save failed: '+e.message,'err'); }
+  finally{ if(btn){btn.disabled=false;btn.textContent='Forward to Logistics →';} }
+}
+
+// =============================================
+//  LOGISTICS
+// =============================================
+let curLP=null, arrVehicles=[];
+
+function openLogistics(planId){
+  if(!canDo('edit')&&ME.role!=='logistics'){toast('No permission','err');return;}
+  const p=DB.plans.find(x=>x.id===planId);if(!p||!p.billingGroups)return;
+  curLP=p;
+  if(p.vehicles && p.vehicles.length){
+    arrVehicles=p.vehicles.map(v=>({...v}));
+  } else {
+    arrVehicles=[];
+    p.billingGroups.forEach(g=>{
+      const vRows=g.vehicleRows||[{type:g.vehicleType||'',capacity:g.vehicleCapacity||0,count:g.vehicleCount||1}];
+      vRows.forEach(vr=>{
+        const count=parseInt(vr.count)||1;
+        for(let s=0;s<count;s++){
+          arrVehicles.push({groupId:g.id,city:g.city,vehicleType:vr.type||g.vehicleType||'',vehicleCapacity:parseFloat(vr.capacity)||g.vehicleCapacity||0,parties:g.parties,vehicleNo:'',driverName:'',driverPhone:'',expectedArrival:'',arrivalStatus:'onway',loadingDone:false,confirmed:false,cancelled:false,cancelReason:''});
+        }
+      });
+    });
+  }
+  renderLogisticsMod(); om('ov-logistics');
+}
+
+function renderLogisticsMod(){
+  const p=curLP;
+  const cities=[...new Set(arrVehicles.map(v=>v.city))];
+  const confirmedCount=arrVehicles.filter(v=>v.confirmed||v.vehicleNo).length;
+  const total=arrVehicles.length;
+  let h=`<div class="alert alert-warn" style="margin-bottom:10px">🚛 Plan <strong>${p.id}</strong> &nbsp;|&nbsp; <strong>${p.totalQty} MT</strong> &nbsp;|&nbsp; Cities: <strong>${cities.join(', ')}</strong></div>
+  <div style="background:#e7f5f4;border-radius:9px;padding:10px 14px;margin-bottom:12px;font-size:13px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:8px">
+    <span>📊 <strong>${confirmedCount} of ${total}</strong> vehicle slots confirmed</span>
+    ${confirmedCount>0?`<span class="badge b-done">✅ ${confirmedCount} saved</span>`:`<span class="badge b-pending">⏳ None saved yet</span>`}
+  </div>`;
+  cities.forEach(city=>{
+    const cveh=arrVehicles.filter(v=>v.city===city);
+    h+=`<div style="background:var(--wa-panel);border:1.5px solid var(--wa-border);border-radius:11px;padding:14px;margin-bottom:12px">
+      <div class="fw6" style="color:var(--wa-dark);font-size:14px;margin-bottom:11px">📍 ${city} &nbsp;<span style="font-size:12px;font-weight:400;color:var(--wa-muted)">${cveh.length} vehicle(s)</span></div>`;
+    cveh.forEach((veh)=>{
+      const gi=arrVehicles.indexOf(veh);
+      const isSaved=!!(veh.confirmed||veh.vehicleNo);
+      const isCancelled=!!veh.cancelled;
+      const cardBg=isCancelled?'#fef2f2':isSaved?'#f0fdf4':'#fff';
+      h+=`<div style="border:1.5px solid ${isCancelled?'#fca5a5':isSaved?'#a7f3d0':'var(--wa-border)'};border-radius:10px;padding:12px;margin-bottom:8px;background:${cardBg}">
+        <div style="display:flex;align-items:center;gap:8px;margin-bottom:8px;flex-wrap:wrap">
+          <span class="fw6" style="font-size:12px;color:var(--wa-dark)">${veh.vehicleType||'—'}${veh.vehicleCapacity?' · '+veh.vehicleCapacity+' MT':''}</span>
+          <span style="font-size:11px;color:var(--wa-muted)">→ ${veh.parties.map(pt=>pt.partyName).join(', ')}</span>
+          ${isSaved?`<span class="badge b-done" style="margin-left:auto">✓ Saved</span>`:''}
+          ${isCancelled?`<span class="badge" style="background:#fee2e2;color:#dc2626;border:1px solid #fca5a5;margin-left:auto">Cancelled</span>`:''}
+        </div>
+        ${!isCancelled?`<div style="display:grid;grid-template-columns:1fr 1fr;gap:7px;margin-bottom:8px">
+          <div><div style="font-size:10px;font-weight:700;color:var(--wa-muted);text-transform:uppercase;margin-bottom:4px">Vehicle No.*</div>
+            <input class="inp inp-sm" type="text" id="vn-${gi}" placeholder="e.g. TN01AB1234" value="${veh.vehicleNo||''}" style="text-transform:uppercase"></div>
+          <div><div style="font-size:10px;font-weight:700;color:var(--wa-muted);text-transform:uppercase;margin-bottom:4px">Driver Name</div>
+            <input class="inp inp-sm" type="text" id="dn-${gi}" placeholder="Driver name" value="${veh.driverName||''}"></div>
+          <div><div style="font-size:10px;font-weight:700;color:var(--wa-muted);text-transform:uppercase;margin-bottom:4px">Driver Phone</div>
+            <input class="inp inp-sm" type="tel" id="dp-${gi}" placeholder="Phone number" value="${veh.driverPhone||''}"></div>
+          <div><div style="font-size:10px;font-weight:700;color:var(--wa-muted);text-transform:uppercase;margin-bottom:4px">Expected Arrival</div>
+            <input class="inp inp-sm" type="datetime-local" id="ea-${gi}" value="${veh.expectedArrival||''}"></div>
+        </div>
+        <div style="display:flex;gap:7px;flex-wrap:wrap">
+          <button class="btn btn-success btn-xs" onclick="saveOneVehicle(${gi})">💾 Save Vehicle</button>
+          <button class="btn btn-danger btn-xs" onclick="cancelOneVehicle(${gi})">✕ Cancel Slot</button>
+        </div>`:`<div style="font-size:12px;color:#dc2626"><strong>Reason:</strong> ${veh.cancelReason||'—'}</div>`}
+      </div>`;
+    });
+    h+=`</div>`;
+  });
+  document.getElementById('ov-logistics-body').innerHTML=h;
+}
+
+async function saveOneVehicle(gi){
+  const vno=document.getElementById('vn-'+gi);
+  const dname=document.getElementById('dn-'+gi);
+  const dphone=document.getElementById('dp-'+gi);
+  const ea=document.getElementById('ea-'+gi);
+  if(!vno||!vno.value.trim()){toast('Vehicle number required','warn');return;}
+  arrVehicles[gi].vehicleNo=vno.value.trim().toUpperCase();
+  arrVehicles[gi].driverName=dname?dname.value.trim():'';
+  arrVehicles[gi].driverPhone=dphone?dphone.value.trim():'';
+  arrVehicles[gi].expectedArrival=ea?ea.value:'';
+  arrVehicles[gi].confirmed=true;
+  arrVehicles[gi].arrivalStatus=arrVehicles[gi].arrivalStatus||'onway';
+  const p=curLP;
+  p.vehicles=arrVehicles.map(v=>({...v}));
+  if(p.status==='billing_done') p.status='vehicles_arranged';
+  p.arrangedBy=ME.name; p.arrangedAt=new Date().toISOString();
+  try{
+    await savePlan(p);
+    toast('Vehicle saved ✓','ok');
+    renderLogisticsMod();
+  }catch(e){ toast('Save failed: '+e.message,'err'); }
+}
+
+async function cancelOneVehicle(gi){
+  const reason=prompt('Reason for cancelling this vehicle slot (optional):');
+  if(reason===null)return;
+  arrVehicles[gi].cancelled=true; arrVehicles[gi].cancelReason=reason||'Cancelled';
+  arrVehicles[gi].confirmed=false;
+  const p=curLP;
+  p.vehicles=arrVehicles.map(v=>({...v}));
+  try{
+    await savePlan(p);
+    toast('Slot cancelled','warn');
+    renderLogisticsMod();
+  }catch(e){ toast('Save failed: '+e.message,'err'); }
+}
+
+async function submitArrangement(){
+  const p=curLP;
+  p.vehicles=arrVehicles.map(v=>({...v}));
+  if(p.status==='billing_done') p.status='vehicles_arranged';
+  p.arrangedBy=ME.name; p.arrangedAt=new Date().toISOString();
+  try{
+    await savePlan(p);
+    closeLogisticsModal();
+    toast('Vehicle arrangement saved ✓','ok');
+  }catch(e){ toast('Save failed: '+e.message,'err'); }
+}
+
+function closeLogisticsModal(){ cm('ov-logistics'); curLP=null; arrVehicles=[]; }
+
+// =============================================
+//  VEHICLE STATUS
+// =============================================
+let curVSP=null;
+function openVehicleStatus(planId){
+  const p=DB.plans.find(x=>x.id===planId);if(!p||!p.vehicles)return;
+  curVSP=p; renderVehicleStatusMod(); om('ov-vstatus');
+}
+function renderVehicleStatusMod(){
+  const p=curVSP;
+  const activeVeh=p.vehicles.filter(v=>!v.cancelled&&(v.confirmed||v.vehicleNo));
+  let h=`<div class="alert alert-info">📡 Plan <strong>${p.id}</strong> — Update vehicle arrival status</div>`;
+  if(!activeVeh.length){h+=`<div class="empty"><p>No active vehicles.</p></div>`;}
+  else activeVeh.forEach((veh)=>{
+    const gi=p.vehicles.indexOf(veh);
+    const st=veh.arrivalStatus||'onway';
+    h+=`<div style="border:1.5px solid var(--wa-border);border-radius:10px;padding:12px;margin-bottom:9px;background:#fff">
+      <div class="fw6" style="font-size:13px;margin-bottom:4px">${veh.vehicleNo} <span style="font-size:11px;font-weight:400;color:var(--wa-muted)">— ${veh.vehicleType} → ${veh.city}</span></div>
+      <div class="vstatus-btns" id="vsb-${gi}">
+        <button class="vstatus-btn ${st==='onway'?'sel-onway':''}" onclick="setVStatus(${gi},'onway')">🚛 On the Way</button>
+        <button class="vstatus-btn ${st==='reached'?'sel-reached':''}" onclick="setVStatus(${gi},'reached')">📍 Reached</button>
+        <button class="vstatus-btn ${st==='loading'?'sel-loading':''}" onclick="setVStatus(${gi},'loading')">⚙️ In Loading</button>
+      </div>
+    </div>`;
+  });
+  document.getElementById('ov-vstatus-body').innerHTML=h;
+}
+function setVStatus(gi,status){
+  curVSP.vehicles[gi].arrivalStatus=status;
+  const btns=document.getElementById('vsb-'+gi); if(!btns)return;
+  btns.querySelectorAll('.vstatus-btn').forEach(b=>{b.className='vstatus-btn';});
+  const map={onway:'sel-onway',reached:'sel-reached',loading:'sel-loading'};
+  const active=btns.children[['onway','reached','loading'].indexOf(status)];
+  if(active&&map[status])active.classList.add(map[status]);
+}
+async function submitVehicleStatus(){
+  try{
+    await savePlan(curVSP);
+    cm('ov-vstatus'); toast('Vehicle status updated ✓','ok');
+  }catch(e){ toast('Save failed: '+e.message,'err'); }
+}
+
+// =============================================
+//  LOADING DONE
+// =============================================
+let curLoadP=null;
+function openLoadingDone(planId){
+  const p=DB.plans.find(x=>x.id===planId);if(!p)return;
+  curLoadP=p;
+  const veh=p.vehicles?p.vehicles.filter(v=>!v.cancelled&&(v.confirmed||v.vehicleNo)):[];
+  let h=`<div class="alert alert-info">Plan <strong>${p.id}</strong> — Confirm each vehicle's loading</div>`;
+  if(!veh.length){h+=`<div class="empty"><p>No vehicles arranged yet.</p></div>`;}
+  else veh.forEach((v,i)=>{
+    const gi=p.vehicles.indexOf(v);
+    h+=`<div style="display:flex;align-items:center;gap:10px;padding:10px 0;border-bottom:1px solid #f0f0f0;flex-wrap:wrap">
+      <label class="tog"><input type="checkbox" id="ld-${gi}" ${v.loadingDone?'checked':''}><span class="tog-sl"></span></label>
+      <div style="flex:1"><div class="fw6" style="font-size:13px">${v.vehicleNo}</div>
+        <div style="font-size:11px;color:var(--wa-muted)">${v.vehicleType} → ${v.city} | ${v.parties.map(pt=>pt.partyName).join(', ')}</div>
+      </div>
+    </div>`;
+  });
+  document.getElementById('ov-loading-body').innerHTML=h;
+  om('ov-loading');
+}
+async function submitLoadingDone(){
+  const p=curLoadP;
+  const veh=p.vehicles.filter(v=>!v.cancelled&&(v.confirmed||v.vehicleNo));
+  veh.forEach(v=>{
+    const gi=p.vehicles.indexOf(v);
+    const cb=document.getElementById('ld-'+gi);
+    if(cb)p.vehicles[gi].loadingDone=cb.checked;
+  });
+  const allDone=veh.every(v=>v.loadingDone);
+  if(allDone){
+    p.status='loading_done';
+    p.loadingDone={by:ME.name,at:new Date().toISOString(),confirmedVehicles:veh.length};
+  }
+  try{
+    await savePlan(p);
+    cm('ov-loading');
+    toast(allDone?'All loading done! Plan complete ✅':'Partial loading saved ✓','ok');
+  }catch(e){ toast('Save failed: '+e.message,'err'); }
+}
+
+// =============================================
+//  VIEW PLAN MODAL
+// =============================================
+function viewPlan(planId){
+  const p=DB.plans.find(x=>x.id===planId);if(!p)return;
+  const steps=['pending_billing','billing_done','vehicles_arranged','loading_done'];
+  const si=steps.indexOf(p.status);
+  const sLabels=['Billing Verification','Logistics Arrangement','Loading Confirmation'];
+  let trail='<div class="trail">';
+  ['Created','Verified','Arranged','Done'].forEach((lbl,i)=>{
+    const cls=i<=si?'trail-done':i===si+1?'trail-active':'trail-future';
+    trail+=`<div class="trail-step ${cls}"><div class="trail-dot">${i<=si?'✓':i+1}</div><div style="font-size:10px;margin-top:3px">${lbl}</div></div>`;
+    if(i<3) trail+=`<div class="trail-line" style="margin-top:-14px"></div>`;
+  });
+  trail+='</div>';
+  let h=trail+`<div class="wcard" style="margin-bottom:12px"><div class="wcard-head"><div class="wcard-title">Plan Info</div><div>${sbadge(p.status)}</div></div>
+    <div class="wcard-body"><div class="g2" style="font-size:13px">
+      <div><div style="color:var(--wa-muted);font-size:11px;margin-bottom:3px">PLAN NO</div><div class="fw6 c-green">${p.id}</div></div>
+      <div><div style="color:var(--wa-muted);font-size:11px;margin-bottom:3px">DATE</div><div>${fd(p.date)}</div></div>
+      <div><div style="color:var(--wa-muted);font-size:11px;margin-bottom:3px">CREATED BY</div><div>${p.createdBy}</div></div>
+      <div><div style="color:var(--wa-muted);font-size:11px;margin-bottom:3px">TOTAL QTY</div><div class="fw6">${p.totalQty} MT</div></div>
+    </div>${p.remarks?`<div style="margin-top:10px;padding-top:10px;border-top:1px solid #f0f0f0;font-size:12px;color:var(--wa-muted)">📝 ${p.remarks}</div>`:''}</div></div>`;
+  h+=`<div class="wcard" style="margin-bottom:12px"><div class="wcard-head"><div class="wcard-title">Party Details</div></div>
+    <div class="tbl-wrap"><table><thead><tr><th>Party</th><th>Qty (MT)</th><th>Material</th></tr></thead>
+    <tbody>${p.parties.map(pt=>`<tr><td class="fw6">${pt.name}</td><td style="color:var(--wa-dark);font-weight:600">${pt.qty}</td><td class="c-muted">${pt.mat}</td></tr>`).join('')}</tbody>
+    </table></div></div>`;
+  if(p.billingGroups&&p.billingGroups.length){
+    h+=`<div class="wcard" style="margin-bottom:12px"><div class="wcard-head"><div class="wcard-title">Billing Details</div><div style="font-size:11px;color:var(--wa-muted)">By ${p.billedBy} · ${p.billedAt?new Date(p.billedAt).toLocaleString('en-IN'):''}</div></div><div class="wcard-body">`;
+    p.billingGroups.forEach((g,i)=>{
+      const vRows=g.vehicleRows||[{type:g.vehicleType,capacity:g.vehicleCapacity,count:g.vehicleCount||1}];
+      h+=`<div class="brow-card"><div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:6px;margin-bottom:8px">
+        <span class="fw6">Group ${i+1} — 📍 ${g.city}</span>
+        <span style="font-size:12px;color:var(--wa-muted)">${vRows.map(vr=>`${vr.type||'—'} × ${vr.count||1}`).join(' + ')}</span>
+      </div>
+      <div>${g.parties.map(pt=>`<div style="display:flex;justify-content:space-between;font-size:12px;padding:4px 0;border-bottom:1px solid #f0f0f0"><span>${pt.partyName}</span><span class="fw6">${pt.qty} MT ${pt.mat}</span></div>`).join('')}</div></div>`;
+    });
+    h+=`</div></div>`;
+  }
+  if(p.vehicles&&p.vehicles.length){
+    h+=`<div class="wcard"><div class="wcard-head"><div class="wcard-title">Vehicles Arranged</div><div style="font-size:11px;color:var(--wa-muted)">By ${p.arrangedBy}</div></div>
+    <div class="tbl-wrap"><table><thead><tr><th>Vehicle No</th><th>Type</th><th>City</th><th>Driver</th><th>Status</th></tr></thead>
+    <tbody>${p.vehicles.map(v=>{
+      if(v.cancelled)return `<tr><td colspan="5" style="color:#dc2626;font-size:12px">❌ Cancelled${v.cancelReason?' — '+v.cancelReason:''}</td></tr>`;
+      if(!(v.confirmed||v.vehicleNo))return'';
+      const st=v.arrivalStatus||'onway';
+      const stBadge={onway:`<span class="badge vs-onway">🚛 On the Way</span>`,reached:`<span class="badge vs-reached">📍 Reached</span>`,loading:`<span class="badge vs-loading">⚙️ Loading</span>`};
+      return `<tr><td class="fw6">${v.vehicleNo}</td><td style="font-size:12px">${v.vehicleType}</td><td>${v.city}</td><td style="font-size:12px">${v.driverName||'—'}</td><td>${v.loadingDone?`<span class="badge b-done">✅ Done</span>`:stBadge[st]||''}</td></tr>`;
+    }).join('')}</tbody></table></div></div>`;
+  }
+  document.getElementById('ov-view-body').innerHTML=h;
+  om('ov-view');
+}
+
+// =============================================
+//  DELETE & UNDO
+// =============================================
+async function delPlan(id){
+  if(!canDo('delete')){toast('No permission to delete','err');return;}
+  if(!confirm('⚠️ Delete this plan permanently? This cannot be undone.')){return;}
+  try{
+    await deletePlanFS(id);
+    cm('ov-view');
+    toast('Plan deleted','ok');
+  }catch(e){ toast('Delete failed: '+e.message,'err'); }
+}
+
+async function undoStep(id){
+  const p=DB.plans.find(x=>x.id===id);if(!p)return;
+  const stepMap={
+    billing_done:     {to:'pending_billing',   clear:['billingGroups','billingRows','billedBy','billedAt'],  label:'Send back to Sales (undo billing)'},
+    vehicles_arranged:{to:'billing_done',      clear:['vehicles','arrangedBy','arrangedAt'],                 label:'Send back to Billing (undo vehicle arrangement)'},
+    loading_done:     {to:'vehicles_arranged', clear:['loadingDone'],                                        label:'Undo loading done confirmation'}
+  };
+  const step=stepMap[p.status];
+  if(!step){toast('Cannot undo this step','warn');return;}
+  if(!confirm(`↩ ${step.label}?\n\nPlan: ${p.id}\n\nThis will clear the data entered in that step.`)){return;}
+  p.status=step.to;
+  step.clear.forEach(k=>{p[k]=null;});
+  try{
+    await savePlan(p);
+    cm('ov-view');
+    toast('Step reversed ✓','ok');
+  }catch(e){ toast('Undo failed: '+e.message,'err'); }
+}
+
+// =============================================
+//  RENDER PAGES (all read from DB.plans/users — live via listener)
+// =============================================
+function renderPage(page){
+  const fn={
+    'dashboard':renderDash,
+    'create-plan':initPlanForm,
+    'my-plans':()=>renderMyPlans(mpF),
+    'billing-inbox':renderBillingInbox,
+    'billing-done':renderBillingDone,
+    'logistics-inbox':renderLogisticsInbox,
+    'vehicle-status':renderVehicleStatusPage,
+    'active-loading':renderActiveLoading,
+    'loading-reports':renderLoadingReports,
+    'all-plans':()=>renderAllPlans(apF),
+    'admin-users':renderAdminUsers
+  };
+  if(fn[page])fn[page]();
+}
+
+function renderDash(){
+  const pb=DB.plans.filter(p=>p.status==='pending_billing').length;
+  const bd=DB.plans.filter(p=>p.status==='billing_done').length;
+  const ar=DB.plans.filter(p=>p.status==='vehicles_arranged').length;
+  const dn=DB.plans.filter(p=>p.status==='loading_done').length;
+  const tot=DB.plans.length;
+  document.getElementById('dash-sub').textContent=`Welcome, ${ME.name} — ${fd(new Date().toISOString().split('T')[0])}`;
+  let stats='',body='',action='';
+  if(ME.role==='admin'||ME.role==='sales'){
+    stats=sc('Total Plans',tot,'#075e54','All time')+sc('Pending Verify',pb,'#d97706','Awaiting billing')+sc('In Progress',bd+ar,'#6b21a8','Pipeline')+sc('Loading Done',dn,'#065f46','Completed');
+    if(canDo('add'))action=`<button class="btn btn-primary" onclick="goPage('create-plan')">+ New Plan</button>`;
+    const rec=[...DB.plans].filter(p=>ME.role==='admin'||p.createdById===ME.id).reverse().slice(0,8);
+    body=rec.length?`<div class="wcard"><div class="wcard-head"><div class="wcard-title">Recent Plans</div><button class="btn btn-sec btn-xs" onclick="goPage('my-plans')">View All</button></div><div class="tbl-wrap"><table><thead><tr><th>Plan No.</th><th>Date</th><th>Parties</th><th>Qty</th><th>Status</th><th></th></tr></thead><tbody>${rec.map(p=>`<tr><td class="fw6 c-green">${p.id}</td><td>${fd(p.date)}</td><td>${p.parties.length}</td><td>${p.totalQty} MT</td><td>${sbadge(p.status)}</td><td><button class="btn btn-sec btn-xs" onclick="viewPlan('${p.id}')">View</button></td></tr>`).join('')}</tbody></table></div></div>`:`<div class="wcard"><div class="empty"><div class="empty-icon">📝</div><p>No plans yet. Create your first loading plan.</p></div></div>`;
+  }else if(ME.role==='billing'){
+    stats=sc('Incoming',pb,'#d97706','Need verification')+sc('Verified',bd,'#1d4ed8','Sent to logistics')+sc('Arranged',ar,'#6b21a8','By logistics')+sc('Done',dn,'#065f46','Completed');
+    if(pb)action=`<button class="btn btn-primary" onclick="goPage('billing-inbox')">Process ${pb} Plan(s)</button>`;
+    const pend=DB.plans.filter(p=>p.status==='pending_billing');
+    body=pend.length?`<div class="wcard"><div class="wcard-head"><div class="wcard-title">⏳ Awaiting Verification (${pend.length})</div></div><div class="tbl-wrap"><table><thead><tr><th>Plan No.</th><th>Date</th><th>Parties</th><th>Qty</th><th>Action</th></tr></thead><tbody>${pend.map(p=>`<tr><td class="fw6 c-green">${p.id}</td><td>${fd(p.date)}</td><td>${p.parties.length}</td><td>${p.totalQty} MT</td><td><button class="btn btn-warn btn-xs" onclick="openBilling('${p.id}')">Verify & Assign</button></td></tr>`).join('')}</tbody></table></div></div>`:`<div class="wcard"><div class="empty"><div class="empty-icon">✅</div><p>All plans verified!</p></div></div>`;
+  }else{
+    stats=sc('Need Vehicles',bd,'#d97706','To arrange')+sc('Active',ar,'#6b21a8','Loading in progress')+sc('Done',dn,'#065f46','Completed')+sc('Total Plans',tot,'#075e54','All');
+    if(bd)action=`<button class="btn btn-primary" onclick="goPage('logistics-inbox')">Arrange Vehicles</button>`;
+    const qi=DB.plans.filter(p=>p.status==='billing_done');
+    const ai=DB.plans.filter(p=>p.status==='vehicles_arranged');
+    body='';
+    if(qi.length)body+=`<div class="wcard"><div class="wcard-head"><div class="wcard-title">🚨 Need Vehicle Arrangement (${qi.length})</div></div><div class="tbl-wrap"><table><thead><tr><th>Plan No.</th><th>Date</th><th>Cities</th><th>Qty</th><th>Action</th></tr></thead><tbody>${qi.map(p=>{const grps=p.billingGroups||[];const cities=[...new Set(grps.map(g=>g.city))].join(', ');return`<tr><td class="fw6 c-green">${p.id}</td><td>${fd(p.date)}</td><td class="c-blue">${cities}</td><td>${p.totalQty} MT</td><td><button class="btn btn-success btn-xs" onclick="openLogistics('${p.id}')">Arrange</button></td></tr>`;}).join('')}</tbody></table></div></div>`;
+    if(ai.length)body+=`<div class="wcard"><div class="wcard-head"><div class="wcard-title">📍 Active — Mark Loading Done (${ai.length})</div></div><div class="tbl-wrap"><table><thead><tr><th>Plan No.</th><th>Date</th><th>Cities</th><th>Vehicles</th><th>Action</th></tr></thead><tbody>${ai.map(p=>`<tr><td class="fw6 c-green">${p.id}</td><td>${fd(p.date)}</td><td class="c-blue">${[...new Set(p.vehicles.map(v=>v.city))].join(', ')}</td><td>${p.vehicles.length}</td><td><button class="btn btn-success btn-xs" onclick="openLoadingDone('${p.id}')">Mark Done ✓</button></td></tr>`).join('')}</tbody></table></div></div>`;
+    if(!body)body=`<div class="wcard"><div class="empty"><div class="empty-icon">🚛</div><p>No pending logistics work!</p></div></div>`;
+  }
+  document.getElementById('dash-stats').innerHTML=stats;
+  document.getElementById('dash-action').innerHTML=action;
+  document.getElementById('dash-body').innerHTML=body;
+}
+function sc(l,v,col,sub){return `<div class="stat-box"><div class="stat-lbl">${l}</div><div class="stat-val" style="color:${col}">${v}</div><div class="stat-sub">${sub}</div></div>`;}
+
+let mpF='all';
+function renderMyPlans(f){
+  if(f)mpF=f;
+  const isAdmin=ME.role==='admin';
+  let plans=[...DB.plans].reverse().filter(p=>isAdmin||p.createdById===ME.id);
+  if(mpF!=='all')plans=plans.filter(p=>p.status===mpF);
+  const body=document.getElementById('mp-body');
+  if(!plans.length){body.innerHTML=`<tr><td colspan="6"><div class="empty"><div class="empty-icon">📝</div><p>No plans found.</p></div></td></tr>`;return;}
+  body.innerHTML=plans.map(p=>{
+    let rowBtns=`<button class="btn btn-sec btn-xs" onclick="viewPlan('${p.id}')">View</button>`;
+    if(canDo('delete'))rowBtns+=`<button class="btn btn-danger btn-xs" onclick="delPlan('${p.id}')">🗑 Delete</button>`;
+    if(p.status==='billing_done'&&(ME.role==='admin'||ME.role==='billing'))rowBtns+=`<button class="btn btn-warn btn-xs" onclick="undoStep('${p.id}')">↩ Undo Billing</button>`;
+    if(p.status==='vehicles_arranged'&&(ME.role==='admin'||ME.role==='logistics'))rowBtns+=`<button class="btn btn-warn btn-xs" onclick="undoStep('${p.id}')">↩ Undo Vehicles</button>`;
+    if(p.status==='loading_done'&&(ME.role==='admin'||ME.role==='logistics'))rowBtns+=`<button class="btn btn-warn btn-xs" onclick="undoStep('${p.id}')">↩ Undo Loading</button>`;
+    return `<tr><td class="fw6 c-green">${p.id}</td><td>${fd(p.date)}</td><td style="font-size:12px;color:var(--wa-muted)">${p.parties.map(x=>x.name).join(', ').substring(0,40)}${p.parties.length>2?'…':''}</td><td>${p.totalQty} MT</td><td>${sbadge(p.status)}</td><td style="display:flex;gap:5px;flex-wrap:wrap">${rowBtns}</td></tr>`;
+  }).join('');
+  document.getElementById('mp-action').innerHTML=canDo('add')?`<button class="btn btn-primary btn-sm" onclick="goPage('create-plan')">+ New Plan</button>`:'';
+}
+function filterMP(f,btn){mpF=f;document.querySelectorAll('#mp-filters .fp').forEach(b=>b.classList.remove('active'));btn.classList.add('active');renderMyPlans(f);}
+
+function renderBillingInbox(){
+  const plans=DB.plans.filter(p=>p.status==='pending_billing');
+  let h='';
+  if(!plans.length){h=`<div class="wcard"><div class="empty"><div class="empty-icon">✅</div><p>All incoming plans have been verified!</p></div></div>`;}
+  else plans.forEach(p=>{
+    h+=`<div class="wcard" style="margin-bottom:14px"><div class="wcard-head"><div><div class="wcard-title">${p.id} &nbsp;${sbadge(p.status)}</div><div style="font-size:11px;color:var(--wa-muted);margin-top:3px">Date: ${fd(p.date)} &nbsp;·&nbsp; ${p.parties.length} parties &nbsp;·&nbsp; ${p.totalQty} MT &nbsp;·&nbsp; By: ${p.createdBy}</div></div>
+      <div style="display:flex;gap:7px;flex-wrap:wrap">${canDo('edit')||ME.role==='billing'?`<button class="btn btn-warn btn-sm" onclick="openBilling('${p.id}')">Verify & Assign →</button>`:''}${canDo('delete')?`<button class="btn btn-danger btn-sm" onclick="delPlan('${p.id}')">🗑 Delete</button>`:''}</div></div>
+      <div class="tbl-wrap"><table><thead><tr><th>Party Name</th><th>Qty (MT)</th><th>Material</th></tr></thead>
+      <tbody>${p.parties.map(pt=>`<tr><td class="fw6">${pt.name}</td><td style="color:var(--wa-dark);font-weight:600">${pt.qty}</td><td class="c-muted">${pt.mat}</td></tr>`).join('')}</tbody></table></div>
+      ${p.remarks?`<div style="padding:9px 16px;border-top:1px solid #f0f0f0;font-size:12px;color:var(--wa-muted)">📝 ${p.remarks}</div>`:''}</div>`;
+  });
+  document.getElementById('bi-body').innerHTML=h;
+}
+
+function renderBillingDone(){
+  const plans=DB.plans.filter(p=>['billing_done','vehicles_arranged','loading_done'].includes(p.status)).reverse();
+  const body=document.getElementById('bd-body');
+  if(!plans.length){body.innerHTML=`<tr><td colspan="6"><div class="empty"><div class="empty-icon">📋</div><p>No verified plans yet.</p></div></td></tr>`;return;}
+  body.innerHTML=plans.map(p=>{
+    const groups=p.billingGroups||[];
+    const cities=groups.length?[...new Set(groups.map(g=>g.city))].join(', '):'-';
+    let btns=`<button class="btn btn-sec btn-xs" onclick="viewPlan('${p.id}')">View</button>`;
+    if(p.status==='billing_done'&&(ME.role==='admin'||ME.role==='billing'))btns+=`<button class="btn btn-warn btn-xs" onclick="undoStep('${p.id}')">↩ Undo</button>`;
+    if(canDo('delete'))btns+=`<button class="btn btn-danger btn-xs" onclick="delPlan('${p.id}')">🗑</button>`;
+    return `<tr><td class="fw6 c-green">${p.id}</td><td>${fd(p.date)}</td><td class="c-blue">${cities}</td><td>${groups.length} group(s)</td><td>${sbadge(p.status)}</td><td style="display:flex;gap:5px;flex-wrap:wrap">${btns}</td></tr>`;
+  }).join('');
+}
+
+function renderLogisticsInbox(){
+  const pendingPlans=DB.plans.filter(p=>p.status==='billing_done');
+  const partialPlans=DB.plans.filter(p=>{
+    if(p.status!=='vehicles_arranged'||!p.vehicles||!p.billingGroups)return false;
+    const totalSlots=p.billingGroups.reduce((s,g)=>{const vr=g.vehicleRows||[{count:g.vehicleCount||1}];return s+vr.reduce((ss,r)=>ss+(parseInt(r.count)||1),0);},0);
+    const savedSlots=p.vehicles.filter(v=>!v.cancelled&&(v.confirmed||v.vehicleNo)).length;
+    return savedSlots<totalSlots;
+  });
+  const allPlans=[...pendingPlans,...partialPlans];
+  let h='';
+  if(!allPlans.length){h=`<div class="wcard"><div class="empty"><div class="empty-icon">🚛</div><p>No pending vehicle requirements!</p></div></div>`;}
+  else allPlans.forEach(p=>{
+    const groups=p.billingGroups||[];
+    const cities=[...new Set(groups.map(g=>g.city))];
+    const totalSlots=groups.reduce((s,g)=>{const vr=g.vehicleRows||[{count:g.vehicleCount||1}];return s+vr.reduce((ss,r)=>ss+(parseInt(r.count)||1),0);},0);
+    const savedSlots=(p.vehicles||[]).filter(v=>!v.cancelled&&(v.confirmed||v.vehicleNo)).length;
+    const isPartial=savedSlots>0&&savedSlots<totalSlots;
+    h+=`<div class="wcard" style="margin-bottom:14px"><div class="wcard-head"><div>
+      <div class="wcard-title">${p.id} ${isPartial?`<span class="badge b-pending">⏳ ${savedSlots}/${totalSlots} saved</span>`:''}</div>
+      <div style="font-size:11px;color:var(--wa-muted);margin-top:3px">${fd(p.date)} &nbsp;·&nbsp; ${p.totalQty} MT &nbsp;·&nbsp; ${totalSlots} vehicle slot(s) &nbsp;·&nbsp; Cities: ${cities.join(', ')}</div></div>
+      <div style="display:flex;gap:7px;flex-wrap:wrap">
+        ${canDo('edit')||ME.role==='logistics'?`<button class="btn btn-success btn-sm" onclick="openLogistics('${p.id}')">${isPartial?'➕ Add More Vehicles':'Arrange Vehicles →'}</button>`:''}
+        ${canDo('delete')?`<button class="btn btn-danger btn-sm" onclick="delPlan('${p.id}')">🗑</button>`:''}
+        ${ME.role==='admin'||ME.role==='billing'?`<button class="btn btn-warn btn-sm" onclick="undoStep('${p.id}')">↩ Undo Billing</button>`:''}
+      </div></div>
+      <div style="padding:12px 16px">${cities.map(city=>{
+        const cg=groups.filter(g=>g.city===city);
+        return `<div style="margin-bottom:10px"><div class="fw6 c-blue" style="font-size:12px;margin-bottom:6px">📍 ${city}</div>${cg.map(g=>{
+          const vRows=g.vehicleRows||[{type:g.vehicleType||'',capacity:g.vehicleCapacity||0,count:g.vehicleCount||1}];
+          const totalCnt=vRows.reduce((s,r)=>s+(parseInt(r.count)||0),0);
+          const savedForGroup=(p.vehicles||[]).filter(v=>!v.cancelled&&v.groupId===g.id&&(v.confirmed||v.vehicleNo)).length;
+          return `<div class="sv-card" style="margin-bottom:7px"><div class="sv-card-head"><div style="flex:1">
+            <div class="fw6" style="font-size:12px">${vRows.map(vr=>`${vr.type||'—'} · ${vr.capacity||'?'} MT × ${vr.count||1}`).join(' + ')}</div>
+            <div style="font-size:11px;color:var(--wa-muted)">${g.parties.reduce((s,pt)=>s+pt.qty,0)} MT material</div></div>
+            <span class="badge ${savedForGroup===totalCnt?'b-done':savedForGroup>0?'b-verified':'b-pending'}">${savedForGroup}/${totalCnt} saved</span></div>
+            ${g.parties.map(pt=>`<div class="sv-party-row"><div class="fw6" style="font-size:12px">${pt.partyName}</div><div style="font-size:11px;color:var(--wa-muted)">${pt.mat} | ${pt.qty} MT</div></div>`).join('')}
+          </div>`;}).join('')}</div>`;
+      }).join('')}</div></div>`;
+  });
+  document.getElementById('li-body').innerHTML=h;
+}
+
+function renderActiveLoading(){
+  const plans=DB.plans.filter(p=>p.status==='vehicles_arranged');
+  let h='';
+  if(!plans.length){h=`<div class="wcard"><div class="empty"><div class="empty-icon">📍</div><p>No active loading right now.</p></div></div>`;}
+  else plans.forEach(p=>{
+    const cities=[...new Set(p.vehicles.map(v=>v.city))];
+    const activeVeh=p.vehicles.filter(v=>!v.cancelled&&(v.confirmed||v.vehicleNo));
+    const doneCount=activeVeh.filter(v=>v.loadingDone).length;
+    const total=activeVeh.length;
+    const cancelledCount=p.vehicles.filter(v=>v.cancelled).length;
+    h+=`<div class="wcard" style="margin-bottom:14px"><div class="wcard-head"><div>
+      <div class="wcard-title">${p.id} &nbsp;${sbadge(p.status)}</div>
+      <div style="font-size:11px;color:var(--wa-muted);margin-top:3px">${fd(p.date)} &nbsp;·&nbsp; Arranged by: ${p.arrangedBy} &nbsp;·&nbsp; <strong style="color:${doneCount===total&&total>0?'#065f46':'#d97706'}">${doneCount}/${total} loaded</strong>${cancelledCount?` &nbsp;·&nbsp; <span style="color:#dc2626">${cancelledCount} cancelled</span>`:''}</div></div>
+      <div style="display:flex;gap:7px;flex-wrap:wrap">
+        ${canDo('edit')||ME.role==='logistics'?`<button class="btn btn-warn btn-sm" onclick="openVehicleStatus('${p.id}')">📡 Status</button><button class="btn btn-success btn-sm" onclick="openLoadingDone('${p.id}')">✓ Loading Done</button>`:''}
+        ${ME.role==='admin'||ME.role==='logistics'?`<button class="btn btn-warn btn-sm" onclick="undoStep('${p.id}')">↩ Undo</button>`:''}
+        ${canDo('delete')?`<button class="btn btn-danger btn-sm" onclick="delPlan('${p.id}')">🗑</button>`:''}
+      </div></div>
+      <div style="padding:12px 16px">`;
+    cities.forEach(city=>{
+      const cveh=p.vehicles.filter(v=>v.city===city);
+      h+=`<div style="margin-bottom:12px"><div class="fw6 c-blue" style="font-size:12px;margin-bottom:7px">📍 ${city}</div>`;
+      cveh.forEach(veh=>{
+        const st=veh.arrivalStatus||'onway';
+        const isDone=!!veh.loadingDone; const isCancelled=!!veh.cancelled;
+        if(isCancelled){h+=`<div style="background:#fef2f2;border:1px solid #fca5a5;border-radius:9px;padding:10px 13px;margin-bottom:7px;opacity:.7"><span style="font-size:13px;font-weight:600;color:#dc2626">❌ ${veh.vehicleNo||'(unassigned)'} — Cancelled</span>${veh.cancelReason?`<div style="font-size:11px;color:#dc2626;margin-top:4px">Reason: ${veh.cancelReason}</div>`:''}</div>`;return;}
+        if(!(veh.confirmed||veh.vehicleNo))return;
+        const stBadge={onway:`<span class="badge vs-onway"><span class="live-dot" style="background:#d97706"></span>On the Way</span>`,reached:`<span class="badge vs-reached">📍 Reached</span>`,loading:`<span class="badge vs-loading">⚙️ Loading</span>`};
+        h+=`<div class="sv-card" style="margin-bottom:7px${isDone?';border-color:#a7f3d0;':''}"><div class="sv-card-head" style="${isDone?'background:#ecfdf5;':''}">
+          <div><span class="fw6" style="color:var(--wa-dark)">${veh.vehicleNo}</span><span style="font-size:11px;color:var(--wa-muted);margin-left:6px">${veh.vehicleType}</span></div>
+          <div style="display:flex;gap:6px;align-items:center">${isDone?`<span class="badge b-done">✅ Done</span>`:stBadge[st]||''}</div></div>
+          ${veh.parties.map(pt=>`<div class="sv-party-row"><div class="fw6" style="font-size:12px">${pt.partyName}</div><div style="font-size:11px;color:var(--wa-muted)">${pt.mat} | ${pt.qty} MT</div></div>`).join('')}
+        </div>`;
+      });
+      h+=`</div>`;
+    });
+    h+=`</div></div>`;
+  });
+  document.getElementById('al-body').innerHTML=h;
+}
+
+function renderVehicleStatusPage(){
+  const plans=DB.plans.filter(p=>p.status==='vehicles_arranged'&&p.vehicles&&p.vehicles.length);
+  let h='';
+  if(!plans.length){h=`<div class="wcard"><div class="empty"><div class="empty-icon">📡</div><p>No active vehicles to track.</p></div></div>`;}
+  else plans.forEach(p=>{
+    const activeVeh=p.vehicles.filter(v=>!v.cancelled&&(v.confirmed||v.vehicleNo));
+    h+=`<div class="wcard" style="margin-bottom:14px"><div class="wcard-head"><div class="wcard-title">${p.id}</div>
+      ${canDo('edit')||ME.role==='logistics'?`<button class="btn btn-warn btn-sm" onclick="openVehicleStatus('${p.id}')">Update Status</button>`:''}
+    </div><div style="padding:12px 16px">`;
+    activeVeh.forEach(veh=>{
+      const st=veh.arrivalStatus||'onway';
+      const stBadge={onway:`<span class="badge vs-onway"><span class="live-dot" style="background:#d97706"></span>On the Way</span>`,reached:`<span class="badge vs-reached">📍 Reached</span>`,loading:`<span class="badge vs-loading">⚙️ In Loading</span>`};
+      h+=`<div style="display:flex;align-items:center;justify-content:space-between;padding:9px 0;border-bottom:1px solid #f5f5f5;flex-wrap:wrap;gap:7px">
+        <div><div class="fw6" style="font-size:13px">${veh.vehicleNo}</div><div style="font-size:11px;color:var(--wa-muted)">${veh.vehicleType} → ${veh.city}</div></div>
+        ${veh.loadingDone?`<span class="badge b-done">✅ Loading Done</span>`:stBadge[st]||''}
+      </div>`;
+    });
+    h+=`</div></div>`;
+  });
+  document.getElementById('vs-body').innerHTML=h;
+}
+
+function renderLoadingReports(){
+  const plans=DB.plans.filter(p=>p.status==='loading_done').reverse();
+  const body=document.getElementById('lr-body');
+  if(!plans.length){body.innerHTML=`<tr><td colspan="8"><div class="empty"><div class="empty-icon">📄</div><p>No completed plans yet.</p></div></td></tr>`;return;}
+  body.innerHTML=plans.map(p=>{
+    const confirmed=p.vehicles?p.vehicles.filter(v=>!v.cancelled&&(v.confirmed||v.vehicleNo)):[];
+    const done=confirmed.filter(v=>v.loadingDone);
+    const groups=p.billingGroups||[];
+    const cities=groups.length?[...new Set(groups.map(g=>g.city))].join(', '):'-';
+    const isFullDone=p.status==='loading_done';
+    const doneTime=p.loadingDone?new Date(p.loadingDone.at).toLocaleString('en-IN',{day:'2-digit',month:'short',hour:'2-digit',minute:'2-digit'}):'—';
+    const doneBy=p.loadingDone?p.loadingDone.by:'—';
+    let btns=`<button class="btn btn-sec btn-xs" onclick="viewPlan('${p.id}')">View</button>`;
+    if(ME.role==='admin'||ME.role==='logistics')btns+=`<button class="btn btn-warn btn-xs" onclick="undoStep('${p.id}')">↩ Undo</button>`;
+    if(canDo('delete'))btns+=`<button class="btn btn-danger btn-xs" onclick="delPlan('${p.id}')">🗑</button>`;
+    const statusCell=isFullDone?`<span class="badge b-done">✅ All Complete</span>`:`<span class="badge b-verified">${done.length}/${confirmed.length} Done</span>`;
+    return `<tr><td class="fw6 c-green">${p.id}</td><td>${fd(p.date)}</td><td class="c-blue" style="font-size:12px">${cities}</td><td>${confirmed.length}</td><td>${statusCell}</td><td style="font-weight:600;color:var(--wa-dark)">${doneTime}</td><td>${doneBy}</td><td style="display:flex;gap:5px;flex-wrap:wrap">${btns}</td></tr>`;
+  }).join('');
+}
+
+let apF='all';
+function renderAllPlans(f){
+  if(f)apF=f;
+  let plans=[...DB.plans].reverse();
+  if(apF!=='all')plans=plans.filter(p=>p.status===apF);
+  const body=document.getElementById('ap-body');
+  if(!plans.length){body.innerHTML=`<tr><td colspan="9"><div class="empty"><div class="empty-icon">📊</div><p>No plans.</p></div></td></tr>`;return;}
+  body.innerHTML=plans.map(p=>{
+    const groups=p.billingGroups||[];
+    const cities=groups.length?[...new Set(groups.map(g=>g.city))].join(', '):'-';
+    let btns=`<button class="btn btn-sec btn-xs" onclick="viewPlan('${p.id}')">View</button>`;
+    if(canDo('delete'))btns+=`<button class="btn btn-danger btn-xs" onclick="delPlan('${p.id}')">🗑</button>`;
+    return `<tr><td class="fw6 c-green">${p.id}</td><td>${fd(p.date)}</td><td>${p.createdBy}</td><td>${p.parties.length}</td><td>${p.totalQty} MT</td><td class="c-blue" style="font-size:12px">${cities}</td><td>${groups.length||'-'}</td><td>${sbadge(p.status)}</td><td style="display:flex;gap:5px;flex-wrap:wrap">${btns}</td></tr>`;
+  }).join('');
+}
+function filterAP(f,btn){document.querySelectorAll('#pg-all-plans .fp').forEach(b=>b.classList.remove('active'));btn.classList.add('active');renderAllPlans(f);}
+
+// =============================================
+//  USER MANAGEMENT (ADMIN)
+// =============================================
+let editingUserId=null;
+function renderAdminUsers(){
+  const ul=document.getElementById('users-list');
+  if(!DB.users.length){ul.innerHTML='<div class="empty"><p>No users yet.</p></div>';return;}
+  const colMap={admin:'#075e54',sales:'#1d4ed8',billing:'#6b21a8',logistics:'#065f46'};
+  const bgMap={admin:'#ecfdf5',sales:'#eff6ff',billing:'#f3e8ff',logistics:'#dcf8c6'};
+  ul.innerHTML=DB.users.map(u=>`<div class="ucard">
+    <div class="ucard-left">
+      <div class="ucard-av" style="background:${bgMap[u.role]||'#eee'};color:${colMap[u.role]||'#333'}">${u.name.charAt(0).toUpperCase()}</div>
+      <div><div class="ucard-name">${u.name} ${u.active===false?'<span style="font-size:10px;color:#dc2626;font-weight:500">(Disabled)</span>':''}</div>
+      <div class="ucard-meta">@${u.username} &nbsp;·&nbsp; <span class="rtag rtag-${u.role}">${ROLE_LABELS[u.role]||u.role}</span> &nbsp;·&nbsp; ${['view','add','edit','delete'].filter(k=>u.perms&&u.perms[k]).join(', ')}</div></div>
+    </div>
+    <div style="display:flex;gap:6px;flex-wrap:wrap">
+      <button class="btn btn-warn btn-xs" onclick="openEditUser('${u.id}')">Edit</button>
+      ${u.username!=='admin'?`<button class="btn btn-sec btn-xs" onclick="toggleUserActive('${u.id}')">${u.active===false?'Enable':'Disable'}</button>`:''}
+      ${u.username!=='admin'?`<button class="btn btn-danger btn-xs" onclick="deleteUserConfirm('${u.id}')">Delete</button>`:''}
+    </div>
+  </div>`).join('');
+}
+
+function openAddUser(){
+  editingUserId=null;
+  document.getElementById('ov-user-title').textContent='Add User';
+  ['u-name','u-uname','u-pass'].forEach(id=>document.getElementById(id).value='');
+  document.getElementById('u-role').value='';
+  document.getElementById('perm-ui').innerHTML='<div class="alert alert-info">Select a role above to configure permissions.</div>';
+  om('ov-user');
+}
+function openEditUser(uid){
+  const u=DB.users.find(x=>x.id===uid);if(!u)return;
+  editingUserId=uid;
+  document.getElementById('ov-user-title').textContent='Edit User';
+  document.getElementById('u-name').value=u.name;
+  document.getElementById('u-uname').value=u.username;
+  document.getElementById('u-pass').value=''; // Never pre-fill passwords
+  document.getElementById('u-role').value=u.role;
+  renderPermUI(u.perms);
+  om('ov-user');
+}
+function renderPermUI(existing){
+  const role=document.getElementById('u-role').value;
+  if(!role){document.getElementById('perm-ui').innerHTML='<div class="alert alert-info">Select a role above to configure permissions.</div>';return;}
+  if(role==='admin'){document.getElementById('perm-ui').innerHTML='<div class="alert alert-success">Admin users have full access to all features.</div>';return;}
+  const defaults=PERM_DEFAULTS[role]||{view:true,add:false,edit:false,delete:false};
+  const perms=existing||defaults;
+  const row=(key,label)=>`<tr><td>${label}</td><td><label class="tog"><input type="checkbox" id="pm-${key}" ${perms[key]?'checked':''}><span class="tog-sl"></span></label></td></tr>`;
+  document.getElementById('perm-ui').innerHTML=`<div class="alert alert-warn" style="margin-bottom:10px">Permissions for <strong>${ROLE_LABELS[role]}</strong> role</div>
+    <table class="perm-table"><thead><tr><th style="text-align:left">Permission</th><th>Allow</th></tr></thead><tbody>
+    ${row('view','View records')}${row('add','Add / Create new plans')}${row('edit','Edit / Process plans')}${row('delete','Delete plans')}
+    </tbody></table>`;
+}
+
+async function saveUserForm(){
+  const name=document.getElementById('u-name').value.trim();
+  const uname=document.getElementById('u-uname').value.trim().toLowerCase();
+  const pass=document.getElementById('u-pass').value;
+  const role=document.getElementById('u-role').value;
+  if(!name||!uname||!role){toast('Fill name, username and role','warn');return;}
+  // Password required for new users, optional for edits
+  if(!editingUserId && !pass){toast('Password required for new users','warn');return;}
+  if(pass && pass.length<4){toast('Password must be at least 4 characters','warn');return;}
+  const dup=DB.users.find(u=>u.username===uname && u.id!==editingUserId);
+  if(dup){toast('Username already exists','err');return;}
+  let perms;
+  if(role==='admin'){perms={view:true,add:true,edit:true,delete:true};}
+  else{perms={view:document.getElementById('pm-view')?document.getElementById('pm-view').checked:true,add:document.getElementById('pm-add')?document.getElementById('pm-add').checked:false,edit:document.getElementById('pm-edit')?document.getElementById('pm-edit').checked:false,delete:document.getElementById('pm-delete')?document.getElementById('pm-delete').checked:false};}
+  const btn=document.querySelector('#ov-user .mf .btn-primary');
+  if(btn){btn.disabled=true;btn.textContent='Saving…';}
+  try{
+    if(editingUserId){
+      const existing=DB.users.find(x=>x.id===editingUserId);
+      const updated={...existing,name,username:uname,role,perms};
+      if(pass)updated.password=pass; // Only update password if new one entered
+      await saveUser(updated);
+    }else{
+      await saveUser({id:'u'+Date.now(),name,username:uname,password:pass,role,active:true,perms});
+    }
+    cm('ov-user');
+    toast(editingUserId?'User updated ✓':'User created ✓','ok');
+  }catch(e){ toast('Save failed: '+e.message,'err'); }
+  finally{ if(btn){btn.disabled=false;btn.textContent='Save User';} }
+}
+
+async function toggleUserActive(uid){
+  const u=DB.users.find(x=>x.id===uid);
+  if(!u||u.username==='admin')return;
+  const updated={...u,active:!u.active};
+  try{
+    await saveUser(updated);
+    toast(updated.active?u.name+' enabled':u.name+' disabled','ok');
+  }catch(e){ toast('Failed: '+e.message,'err'); }
+}
+
+async function deleteUserConfirm(uid){
+  const u=DB.users.find(x=>x.id===uid);
+  if(!u||u.username==='admin'){toast('Cannot delete admin account','err');return;}
+  if(!confirm(`Delete user "${u.name}"? This cannot be undone.`))return;
+  try{
+    await deleteUserFS(uid);
+    toast('User deleted','ok');
+  }catch(e){ toast('Delete failed: '+e.message,'err'); }
+}
+
+async function changePassword(){
+  const oldP=document.getElementById('cp-old').value;
+  const newP=document.getElementById('cp-new').value;
+  const conP=document.getElementById('cp-con').value;
+  const err=document.getElementById('cp-err');
+  err.style.display='none';
+  if(oldP!==ME.password){err.textContent='Current password is incorrect.';err.style.display='block';return;}
+  if(newP.length<4){err.textContent='New password must be at least 4 characters.';err.style.display='block';return;}
+  if(newP!==conP){err.textContent='New passwords do not match.';err.style.display='block';return;}
+  const u=DB.users.find(x=>x.id===ME.id);
+  if(!u){err.textContent='User not found.';err.style.display='block';return;}
+  try{
+    const updated={...u,password:newP};
+    await saveUser(updated);
+    ME.password=newP;
+    cm('ov-chpw');
+    ['cp-old','cp-new','cp-con'].forEach(id=>document.getElementById(id).value='');
+    toast('Password updated ✓','ok');
+  }catch(e){ err.textContent='Save failed: '+e.message; err.style.display='block'; }
+}
+
+// =============================================
+//  STATUS BADGE
+// =============================================
+const SB_CFG={
+  pending_billing:  {lbl:'Pending Verification',cls:'b-pending'},
+  billing_done:     {lbl:'Verified – To Logistics',cls:'b-verified'},
+  vehicles_arranged:{lbl:'Vehicles Arranged',cls:'b-arranged'},
+  loading_done:     {lbl:'Loading Done',cls:'b-done'}
+};
+function sbadge(s){const c=SB_CFG[s]||{};return `<span class="badge ${c.cls}"><span class="bdot"></span>${c.lbl}</span>`;}
+
+// =============================================
+//  BADGES (sidebar counts)
+// =============================================
+function updateBadges(){
+  const pb=DB.plans.filter(p=>p.status==='pending_billing').length;
+  const bd=DB.plans.filter(p=>p.status==='billing_done').length;
+  const va=DB.plans.filter(p=>p.status==='vehicles_arranged').length;
+  ['bb','nb-bb'].forEach(id=>{const el=document.getElementById(id);if(el){el.textContent=pb;el.style.display=pb?'':'none';}});
+  ['lb','nb-lb'].forEach(id=>{const el=document.getElementById(id);if(el){el.textContent=bd;el.style.display=bd?'':'none';}});
+  ['vsb','nb-vsb'].forEach(id=>{const el=document.getElementById(id);if(el){el.textContent=va;el.style.display=va?'':'none';}});
+}
+
+// =============================================
+//  HELPERS
+// =============================================
+function fd(d){
+  if(!d)return'-';
+  const dt=new Date(d+'T00:00:00');
+  return dt.toLocaleDateString('en-IN',{day:'2-digit',month:'short',year:'numeric'});
+}
+
+function toast(msg,type='ok'){
+  const t=document.createElement('div');
+  const styles={ok:'background:#dcf8c6;color:#064e3b;border:1px solid #a7f3d0',warn:'background:#fffbeb;color:#92400e;border:1px solid #fde68a',err:'background:#fef2f2;color:#dc2626;border:1px solid #fca5a5'};
+  t.style.cssText=`position:fixed;bottom:22px;right:22px;padding:11px 18px;border-radius:11px;font-weight:600;font-size:13px;z-index:9999;box-shadow:0 4px 20px rgba(0,0,0,.15);transform:translateY(70px);transition:transform .3s;max-width:320px;font-family:inherit;${styles[type]||styles.ok}`;
+  t.textContent=msg;document.body.appendChild(t);
+  setTimeout(()=>t.style.transform='translateY(0)',10);
+  setTimeout(()=>{t.style.transform='translateY(70px)';setTimeout(()=>t.remove(),300);},3200);
+}
+
+
+function hardReset(){
+  if(!confirm('Reload the page?\n\nYour data is stored in Firebase and will NOT be lost.')) return;
+  window.location.reload(true);
+}
+
+// =============================================
+//  BOOT
+// =============================================
+
+// Expose functions to global scope for inline onclick handlers
+window.doLogin = typeof doLogin !== "undefined" ? doLogin : undefined;
+window.doLogout = typeof doLogout !== "undefined" ? doLogout : undefined;
+window.goPage = typeof goPage !== "undefined" ? goPage : undefined;
+window.toggleSb = typeof toggleSb !== "undefined" ? toggleSb : undefined;
+window.closeSb = typeof closeSb !== "undefined" ? closeSb : undefined;
+window.om = typeof om !== "undefined" ? om : undefined;
+window.cm = typeof cm !== "undefined" ? cm : undefined;
+window.addPRow = typeof addPRow !== "undefined" ? addPRow : undefined;
+window.submitPlan = typeof submitPlan !== "undefined" ? submitPlan : undefined;
+window.updateRef = typeof updateRef !== "undefined" ? updateRef : undefined;
+window.openBilling = typeof openBilling !== "undefined" ? openBilling : undefined;
+window.addBVG = typeof addBVG !== "undefined" ? addBVG : undefined;
+window.removeBVG = typeof removeBVG !== "undefined" ? removeBVG : undefined;
+window.addVRow = typeof addVRow !== "undefined" ? addVRow : undefined;
+window.removeVRow = typeof removeVRow !== "undefined" ? removeVRow : undefined;
+window.updateBVGCalc = typeof updateBVGCalc !== "undefined" ? updateBVGCalc : undefined;
+window.updateBVGBorder = typeof updateBVGBorder !== "undefined" ? updateBVGBorder : undefined;
+window.addPartyToBVG = typeof addPartyToBVG !== "undefined" ? addPartyToBVG : undefined;
+window.removePartyFromBVG = typeof removePartyFromBVG !== "undefined" ? removePartyFromBVG : undefined;
+window.submitBilling = typeof submitBilling !== "undefined" ? submitBilling : undefined;
+window.openLogistics = typeof openLogistics !== "undefined" ? openLogistics : undefined;
+window.saveOneVehicle = typeof saveOneVehicle !== "undefined" ? saveOneVehicle : undefined;
+window.cancelOneVehicle = typeof cancelOneVehicle !== "undefined" ? cancelOneVehicle : undefined;
+window.submitArrangement = typeof submitArrangement !== "undefined" ? submitArrangement : undefined;
+window.closeLogisticsModal = typeof closeLogisticsModal !== "undefined" ? closeLogisticsModal : undefined;
+window.openVehicleStatus = typeof openVehicleStatus !== "undefined" ? openVehicleStatus : undefined;
+window.setVStatus = typeof setVStatus !== "undefined" ? setVStatus : undefined;
+window.submitVehicleStatus = typeof submitVehicleStatus !== "undefined" ? submitVehicleStatus : undefined;
+window.openLoadingDone = typeof openLoadingDone !== "undefined" ? openLoadingDone : undefined;
+window.submitLoadingDone = typeof submitLoadingDone !== "undefined" ? submitLoadingDone : undefined;
+window.viewPlan = typeof viewPlan !== "undefined" ? viewPlan : undefined;
+window.delPlan = typeof delPlan !== "undefined" ? delPlan : undefined;
+window.undoStep = typeof undoStep !== "undefined" ? undoStep : undefined;
+window.filterMP = typeof filterMP !== "undefined" ? filterMP : undefined;
+window.filterAP = typeof filterAP !== "undefined" ? filterAP : undefined;
+window.openAddUser = typeof openAddUser !== "undefined" ? openAddUser : undefined;
+window.openEditUser = typeof openEditUser !== "undefined" ? openEditUser : undefined;
+window.renderPermUI = typeof renderPermUI !== "undefined" ? renderPermUI : undefined;
+window.saveUserForm = typeof saveUserForm !== "undefined" ? saveUserForm : undefined;
+window.toggleUserActive = typeof toggleUserActive !== "undefined" ? toggleUserActive : undefined;
+window.deleteUserConfirm = typeof deleteUserConfirm !== "undefined" ? deleteUserConfirm : undefined;
+window.changePassword = typeof changePassword !== "undefined" ? changePassword : undefined;
+window.hardReset = typeof hardReset !== "undefined" ? hardReset : undefined;
+
+loadDB();
+
+</script>
+</body>
+</html>

@@ -107,6 +107,7 @@ html,body{height:100%;font-family:'Inter',sans-serif;background:var(--wa-bg);col
 .stat-box{background:var(--wa-white);border-radius:12px;padding:14px 16px;box-shadow:var(--wa-shadow);}
 .stat-lbl{font-size:10px;font-weight:600;text-transform:uppercase;letter-spacing:.4px;color:var(--wa-muted);margin-bottom:6px;}
 .stat-val{font-size:26px;font-weight:700;}
+.stat-qty{font-size:13px;font-weight:700;color:var(--wa-mid);margin-top:3px;}
 .stat-sub{font-size:11px;color:var(--wa-muted);margin-top:2px;}
 
 /* CARD */
@@ -1509,25 +1510,28 @@ function renderPage(page){
 }
 
 function renderDash(){
-  const pb=DB.plans.filter(p=>p.status==='pending_billing').length;
-  const bd=DB.plans.filter(p=>p.status==='billing_done').length;
-  const ar=DB.plans.filter(p=>p.status==='vehicles_arranged').length;
-  const dn=DB.plans.filter(p=>p.status==='loading_done').length;
+  const pbPlans=DB.plans.filter(p=>p.status==='pending_billing');
+  const bdPlans=DB.plans.filter(p=>p.status==='billing_done');
+  const arPlans=DB.plans.filter(p=>p.status==='vehicles_arranged');
+  const dnPlans=DB.plans.filter(p=>p.status==='loading_done');
+  const pb=pbPlans.length, bd=bdPlans.length, ar=arPlans.length, dn=dnPlans.length;
   const tot=DB.plans.length;
+  const sumQty=arr=>arr.reduce((s,p)=>s+(parseFloat(p.totalQty)||0),0);
+  const totQty=sumQty(DB.plans), pbQty=sumQty(pbPlans), inpQty=sumQty(bdPlans)+sumQty(arPlans), dnQty=sumQty(dnPlans);
   document.getElementById('dash-sub').textContent=`Welcome, ${ME.name} — ${fd(new Date().toISOString().split('T')[0])}`;
   let stats='',body='',action='';
   if(ME.role==='admin'||ME.role==='sales'){
-    stats=sc('Total Plans',tot,'#b84c09','All time')+sc('Pending Verify',pb,'#d97706','Awaiting billing')+sc('In Progress',bd+ar,'#6b21a8','Pipeline')+sc('Loading Done',dn,'#065f46','Completed');
+    stats=sc('Total Plans',tot,'#075e54','All time',totQty)+sc('Pending Verify',pb,'#d97706','Awaiting billing',pbQty)+sc('In Progress',bd+ar,'#6b21a8','Pipeline',inpQty)+sc('Loading Done',dn,'#065f46','Completed',dnQty);
     if(canDo('add'))action=`<button class="btn btn-primary" onclick="goPage('create-plan')">+ New Plan</button>`;
     const rec=[...DB.plans].filter(p=>ME.role==='admin'||p.createdById===ME.id).reverse().slice(0,8);
     body=rec.length?`<div class="wcard"><div class="wcard-head"><div class="wcard-title">Recent Plans</div><button class="btn btn-sec btn-xs" onclick="goPage('my-plans')">View All</button></div><div class="tbl-wrap"><table><thead><tr><th>Plan No.</th><th>Date</th><th>Parties</th><th>Qty</th><th>Status</th><th></th></tr></thead><tbody>${rec.map(p=>`<tr><td class="fw6 c-green">${p.id}</td><td>${fd(p.date)}</td><td>${p.parties.length}</td><td>${p.totalQty} MT</td><td>${sbadge(p.status)}</td><td><button class="btn btn-sec btn-xs" onclick="viewPlan('${p.id}')">View</button></td></tr>`).join('')}</tbody></table></div></div>`:`<div class="wcard"><div class="empty"><div class="empty-icon">📝</div><p>No plans yet. Create your first loading plan.</p></div></div>`;
   }else if(ME.role==='billing'){
-    stats=sc('Incoming',pb,'#d97706','Need verification')+sc('Verified',bd,'#1d4ed8','Sent to logistics')+sc('Arranged',ar,'#6b21a8','By logistics')+sc('Done',dn,'#065f46','Completed');
+    stats=sc('Incoming',pb,'#d97706','Need verification',pbQty)+sc('Verified',bd,'#1d4ed8','Sent to logistics',sumQty(bdPlans))+sc('Arranged',ar,'#6b21a8','By logistics',sumQty(arPlans))+sc('Done',dn,'#065f46','Completed',dnQty);
     if(pb)action=`<button class="btn btn-primary" onclick="goPage('billing-inbox')">Process ${pb} Plan(s)</button>`;
     const pend=DB.plans.filter(p=>p.status==='pending_billing');
     body=pend.length?`<div class="wcard"><div class="wcard-head"><div class="wcard-title">⏳ Awaiting Verification (${pend.length})</div></div><div class="tbl-wrap"><table><thead><tr><th>Plan No.</th><th>Date</th><th>Parties</th><th>Qty</th><th>Action</th></tr></thead><tbody>${pend.map(p=>`<tr><td class="fw6 c-green">${p.id}</td><td>${fd(p.date)}</td><td>${p.parties.length}</td><td>${p.totalQty} MT</td><td><button class="btn btn-warn btn-xs" onclick="openBilling('${p.id}')">Verify & Assign</button></td></tr>`).join('')}</tbody></table></div></div>`:`<div class="wcard"><div class="empty"><div class="empty-icon">✅</div><p>All plans verified!</p></div></div>`;
   }else{
-    stats=sc('Need Vehicles',bd,'#d97706','To arrange')+sc('Active',ar,'#6b21a8','Loading in progress')+sc('Done',dn,'#065f46','Completed')+sc('Total Plans',tot,'#b84c09','All');
+    stats=sc('Need Vehicles',bd,'#d97706','To arrange',sumQty(bdPlans))+sc('Active',ar,'#6b21a8','Loading in progress',sumQty(arPlans))+sc('Done',dn,'#065f46','Completed',dnQty)+sc('Total Plans',tot,'#075e54','All',totQty);
     if(bd)action=`<button class="btn btn-primary" onclick="goPage('logistics-inbox')">Arrange Vehicles</button>`;
     const qi=DB.plans.filter(p=>p.status==='billing_done');
     const ai=DB.plans.filter(p=>p.status==='vehicles_arranged');
@@ -1540,7 +1544,7 @@ function renderDash(){
   document.getElementById('dash-action').innerHTML=action;
   document.getElementById('dash-body').innerHTML=body;
 }
-function sc(l,v,col,sub){return `<div class="stat-box"><div class="stat-lbl">${l}</div><div class="stat-val" style="color:${col}">${v}</div><div class="stat-sub">${sub}</div></div>`;}
+function sc(l,v,col,sub,qty){return `<div class="stat-box"><div class="stat-lbl">${l}</div><div class="stat-val" style="color:${col}">${v}</div>${qty!==undefined?`<div class="stat-qty">${qty} MT</div>`:''}<div class="stat-sub">${sub}</div></div>`;}
 
 let mpF='all';
 function renderMyPlans(f){
